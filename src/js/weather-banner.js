@@ -13,9 +13,7 @@ const refs = {
     ),
 };
 
-onBannerLoad();
-
-async function onBannerLoad() {
+export async function onBannerLoad() {
     const { latitude, longitude } = await getCoordinates();
     let weatherData = {};
     const weatherService = new WeatherService(latitude, longitude);
@@ -174,4 +172,9 @@ function getCurrentDate(date) {
     const currentYear = date.getFullYear();
     const currentDay = date.getDate();
     return `${dayOfWeek}<br>${currentDay} ${currentMonth} ${currentYear}`;
+}
+
+export function displayBanner() {
+    const gridBox = document.querySelector('.grid-box');
+    gridBox.classList.remove('banner-hidden');
 }

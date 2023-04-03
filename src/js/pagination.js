@@ -1,14 +1,25 @@
 import { refs } from './refs';
 let newsPerPage;
+import { removeLoader } from './searchForm';
 
 export function createPagination(newsArray, funcForRenderingMarkup) {
-    setNumberOfPages();
+    setNumberOfNewsperPage();
+    refs.pgWrapper.classList.remove('visually-hidden');
+    refs.btnNextPg.classList.remove('visually-hidden');
+    refs.btnPrevPg.classList.remove('visually-hidden');
+    refs.btnPrevPg.disabled = true;
 
     const valuePage = {
         curPage: 1,
         numLinksTwoSide: 1,
         totalPages: Math.ceil((newsArray.length + 1) / (newsPerPage + 1)),
     };
+
+    if(valuePage.totalPages <= 1) {
+        refs.pgWrapper.classList.add('visually-hidden');
+        removeLoader();
+        return;
+    }
 
     pagination(valuePage);
 
@@ -49,6 +60,8 @@ export function createPagination(newsArray, funcForRenderingMarkup) {
             }
         }
     });
+    
+    fixScreenHeight();
 }
 
 function pagination(valuePage) {
@@ -195,12 +208,20 @@ function renderPage(index, active = '') {
 </li>`;
 }
 
-function setNumberOfPages() {
+function setNumberOfNewsperPage() {
     if (window.matchMedia('(min-width: 1280px)').matches) {
         newsPerPage = 8;
     } else if (window.matchMedia('(min-width: 768px)').matches) {
         newsPerPage = 7;
     } else {
         newsPerPage = 4;
+    }
+}
+
+function fixScreenHeight() {
+    refs.newsContainer.style.height = '';
+    if (window.matchMedia('(min-width: 768px)').matches) {
+        const galleryHeight = refs.newsContainer.clientHeight;
+        refs.newsContainer.style.height = `${galleryHeight}px`;
     }
 }
