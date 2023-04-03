@@ -4,7 +4,7 @@ import { resetStyle } from './sign-in-up';
 import { checkCurrentLocation } from './check-current-location';
 
 export const verifyUser = () => {
-    isAutorized = load('bite-news-app');
+    const isAutorized = load('bite-news-app');
     if (!isAutorized) {
         if (
             checkCurrentLocation() === 'favorite' ||
