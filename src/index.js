@@ -17,6 +17,7 @@ import {
 } from './js/sign-in-up';
 import { favoriteRender, onFavoriteBtnRemoveClick } from './js/favorite-page';
 import { addDataReadNews } from './js/read/add-data-read-more';
+import {renderGalleryReadOnDays} from './js/read/render-markup-read';
 
 refs.mobileToggler.addEventListener('click', onToglerClick);
 refs.togler.addEventListener('click', onToglerClick);
@@ -36,6 +37,7 @@ if (checkCurrentLocation() === 'index') {
         onBannerLoad();
         displayBanner();
     }, 300);
+    console.log(2);
     refs.newsContainer.addEventListener('click', addDataReadNews);
 }
 
@@ -67,6 +69,12 @@ if (
             'click',
             onFavoriteBtnRemoveClick
         );
+        return;
+    };
+    if (checkCurrentLocation() === 'read') {
+        renderGalleryReadOnDays();
+        refs.readContainer.addEventListener('click', addDataReadNews);
+        return;
     }
 }
 
