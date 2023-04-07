@@ -42,7 +42,7 @@ export const refs = {
     pgContainer: document.querySelector('.pagination__container'),
     btnNextPg: document.querySelector('.pagination__next-page'),
     btnPrevPg: document.querySelector('.pagination__prev-page'),
-    boxItems: document.querySelector('.read'),
+    readContainer: document.querySelector('.read'),
     favoritesContainer: document.querySelector('.favorites'),
     newsSection: document.querySelector('.news-section'),
     newsNotFoundSection: document.querySelector('.not-found-section'),
