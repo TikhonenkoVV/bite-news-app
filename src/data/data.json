@@ -1,0 +1,92 @@
+[
+    {
+        "favorite": false,
+        "readMore": 1681820055202,
+        "imgUrl": "https://static01.nyt.com/images/2023/04/17/multimedia/17childlabor-warnings-antonio2-zhfb/17childlabor-warnings-antonio2-zhfb-mediumThreeByTwo440-v2.jpg",
+        "title": "As Migrant Children Were Put to Work, U.S. Ignored Warnings",
+        "section": "U.S.",
+        "abstract": "The White House and federal agencies were repeatedly alerted to signs of children at risk. The warnings were ignored or missed.",
+        "published_date": "2023-04-17",
+        "url": "https://www.nytimes.com/2023/04/17/us/politics/migrant-child-labor-biden.html"
+    },
+    {
+        "favorite": true,
+        "readMore": "",
+        "imgUrl": "http://localhost:1234/no_poster.e8401073.jpg?1681929866017",
+        "title": "84-Year-Old Is Charged in Shooting of Black Teenager Who Went to Wrong House",
+        "section": "U.S.",
+        "abstract": "Lawyers for the family of Ralph Yarl, 16, said he was critically injured when he was shot twice in Kansas City, Mo.",
+        "published_date": "2023-04-17",
+        "url": "https://www.nytimes.com/2023/04/17/us/ralph-yarl-kansas-city-shooting.html"
+    },
+    {
+        "favorite": true,
+        "readMore": 1681929997111,
+        "imgUrl": "https://static01.nyt.com/images/2023/04/17/nyregion/17wronghouse-death/17wronghouse-death-mediumThreeByTwo440.jpg",
+        "title": "Man Charged With Murder in Shooting of Woman Who Went Up Wrong Driveway",
+        "section": "New York",
+        "abstract": "Kevin Monahan shot Kaylin Gillis, 20, when she and several friends wound up outside his house in a rural part of upstate New York, the authorities said.",
+        "published_date": "2023-04-17",
+        "url": "https://www.nytimes.com/2023/04/17/nyregion/man-charged-kaylin-gillis-driveway-shooting.html"
+    },
+    {
+        "favorite": true,
+        "readMore": 1682417833082,
+        "imgUrl": "https://static01.nyt.com/images/2023/04/24/multimedia/24xp-lengoodman1-vpkb/24xp-lengoodman1-vpkb-mediumThreeByTwo440.jpg",
+        "title": "Len Goodman, ‘Dancing With the Stars’ Judge, Dies at 78",
+        "section": "Arts",
+        "abstract": "Mr. Goodman, who was also a longtime judge on the British show “Strictly Come Dancing,” was known for his wry humor, wit and colorful phrases.",
+        "published_date": "2023-04-24",
+        "url": "https://www.nytimes.com/2023/04/24/arts/television/len-goodman-dead.html"
+    },
+    {
+        "favorite": false,
+        "readMore": 1682588286813,
+        "imgUrl": "https://static01.nyt.com/images/2023/04/25/multimedia/25pol-bud-light-gzjb/25pol-bud-light-gzjb-mediumThreeByTwo440.jpg",
+        "title": "Ad Flap Leaves Bitter Aftertaste for Bud Light and Warning for Big Business",
+        "section": "U.S.",
+        "abstract": "Bud Light’s marketing effort with a transgender influencer has put it “in the center of the culture wars in a way that no company could possibly want to be,” one observer said.",
+        "published_date": "2023-04-25",
+        "url": "https://www.nytimes.com/2023/04/25/us/politics/bud-light-boycott-politics-republicans.html"
+    },
+    {
+        "favorite": false,
+        "readMore": 1682608084123,
+        "imgUrl": "https://static01.nyt.com/images/2023/04/26/multimedia/26fox-tucker-tmhl/26fox-tucker-tmhl-mediumThreeByTwo440.jpg",
+        "title": "On Eve of Trial, Discovery of Carlson Texts Set Off Crisis Atop Fox",
+        "section": "Business",
+        "abstract": "Private messages sent by Tucker Carlson that had been redacted in legal filings showed him making highly offensive remarks that went beyond the comments of his prime-time show.",
+        "published_date": "2023-04-26",
+        "url": "https://www.nytimes.com/2023/04/26/business/media/tucker-carlson-dominion-fox-news.html"
+    },
+    {
+        "favorite": false,
+        "readMore": 1682608164053,
+        "imgUrl": "https://static01.nyt.com/images/2023/04/26/multimedia/26DISNEY-DESANTIS-1-gwfl/26DISNEY-DESANTIS-1-gwfl-mediumThreeByTwo440.jpg",
+        "title": "Disney Sues DeSantis Over Control of Its Florida Resort",
+        "section": "Business",
+        "abstract": "The company claimed “a targeted campaign of government retaliation,” which it said stemmed from its criticism of a contentious state education law.",
+        "published_date": "2023-04-26",
+        "url": "https://www.nytimes.com/2023/04/26/business/disney-desantis-board-florida.html"
+    },
+    {
+        "favorite": false,
+        "readMore": "",
+        "imgUrl": "https://static01.nyt.com/images/2023/04/26/multimedia/01AI-HINTON/01AI-HINTON-mediumThreeByTwo440.jpg",
+        "title": "‘The Godfather of A.I.’ Leaves Google and Warns of Danger Ahead",
+        "section": "Technology",
+        "abstract": "For half a century, Geoffrey Hinton nurtured the technology at the heart of chatbots like ChatGPT. Now he worries it will cause serious harm.",
+        "published_date": "2023-05-01",
+        "url": "https://www.nytimes.com/2023/05/01/technology/ai-google-chatbot-engineer-quits-hinton.html"
+    },
+    {
+        "favorite": true,
+        "readMore": 1683116106733,
+        "imgUrl": "https://static01.nyt.com/images/2023/05/01/multimedia/00VICE-qzbg/00VICE-qzbg-mediumThreeByTwo440.jpg",
+        "title": "Vice Is Said to Be Headed for Bankruptcy",
+        "section": "Business",
+        "abstract": "The company, which was once valued at $5.7 billion, has been struggling to find a buyer this year.",
+        "published_date": "2023-05-01",
+        "url": "https://www.nytimes.com/2023/05/01/business/media/vice-bankruptcy.html"
+    }
+]

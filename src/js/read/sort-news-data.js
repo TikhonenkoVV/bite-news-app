@@ -1,16 +1,25 @@
-export const sortReadDate = () => {
-  const savedLocalNews = localStorage.getItem('user-gallery');
-  const filterArray = JSON.parse(savedLocalNews).filter(({ readMore }) => readMore !== '');
-  const groupedByKey = filterArray.reduce((acc, obj) => {
-      const key = obj.key;
-      const collection = acc.get(key);
-      if (!collection) {
-        acc.set(key, [obj]);
-      } else {
-        collection.push(obj);
-      }
-      return acc;
+import { formatDate, numToDateStr } from '../services/format-date';
+
+export const sortUserNews = (userNews, value) => {
+    let filterArray;
+    let result;
+    if (value === true) {
+        filterArray = userNews.filter(({ favorite }) => favorite === value);
+        result = filterArray;
+        return result;
+    }
+    filterArray = userNews.filter(({ readMore }) => readMore !== value);
+
+    const groupedByKey = filterArray.reduce((acc, obj) => {
+        const key = numToDateStr(obj.readMore);
+        const collection = acc.get(key);
+        if (!collection) {
+            acc.set(key, [obj]);
+        } else {
+            collection.push(obj);
+        }
+        return acc;
     }, new Map());
-    const result = Array.from(groupedByKey.values());
-  return result;
+    result = Array.from(groupedByKey.values());
+    return result;
 };

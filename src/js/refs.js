@@ -2,6 +2,14 @@ export const refs = {
     // backrop and modal windows refs
     backdrop: document.querySelector('.backdrop'),
     autorizeModal: document.querySelector('.autorize__container'),
+    userProfile: document.querySelector('.user-profile'),
+    userNameInput: document.querySelector('input[name="user_name"]'),
+    statsFavorites: document.querySelector('.js-favorites'),
+    statsRead: document.querySelector('.js-read'),
+    userProfileCloseBtn: document.querySelector('.user-profile__close'),
+    userProfileForm: document.querySelector('.user-profile__form'),
+    passChangeInput: document.querySelector('[name="pass"]'),
+    userProfileSubmitBtn: document.querySelector('.user-profile__btn'),
 
     //sign in refs
     autorizeNav: document.querySelector('.autorize__nav'),
@@ -18,6 +26,8 @@ export const refs = {
     iconUse: document.querySelectorAll('.autorize__use'),
     autorizeField: document.querySelectorAll('.autorize__field'),
     profileBtn: document.querySelector('.profile'),
+    profileMenu: document.querySelector('.profile__menu'),
+    profileList: document.querySelector('.profile__list'),
 
     // header refs
     siteNav: document.querySelector('.main-nav'),
@@ -25,14 +35,17 @@ export const refs = {
     mobileToggler: document.querySelector('.theme-mobile__togler'),
     form: document.querySelector('.search-form'),
     seachQuery: document.querySelector('.header__input-search'),
+    profileBtn: document.querySelector('.profile__btn'),
 
     // pages refs
     gridBox: document.querySelector('.grid-box'),
     newsContainer: document.querySelector('.news'),
-    favoritesListBtn: document.getElementById('#favoritesList'),
+    // favoritesListBtn: document.getElementById('#favoritesList'),
+    categoriesContainer: document.querySelector('.container__categories'),
     categoriesBtns: document.querySelector('.home__category'),
-    categoriesDropdown: document.querySelector('.home__dropdown-menu'),
-    categoryButton: document.querySelector('.home__category-button'),
+    categoriesDropdownBtn: document.querySelector('.js-category-dropdown'),
+    categoriesDropdownMenu: document.querySelector('.home__dropdown-menu'),
+    categoryButton: document.querySelector('.js-cat-btn'),
     openIcon: document.querySelector('.home__category-button-icon--open'),
     closeIcon: document.querySelector('.home__category-button-icon--close'),
 

@@ -1,125 +1,44 @@
-// import { addRemoveDataFavorite } from './addremove-data-favorite';
-// import { load } from '../storage';
-// import { addOverLay } from '../main';
-// import { updateReedFunc } from '../autorization';
-// import { openCloseNews } from './open-close-news';
-// import { auth, firebaseApp } from '../auth';
-
-// let db = '';
-// let currentUser = {};
-
-// export const addDataReadNews = e => {
-//     addRemoveDataFavorite(e);
-//     openCloseNews(e);
-//     if (!e.target.classList.contains('info__link')) {
-//         return;
-//     }
-//     const url = e.target.href;
-//     const todayDate = () => {
-//         const date = new Date();
-//         const day = date.getDate().toString().padStart(2, '0');
-//         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-//         return `${day}/${month}/${date.getFullYear()}`;
-//     };
-//     const formattedDate = todayDate();
-//     addOverLay(e);
-//     let userGallery = load('user-gallery');
-
-//     let newArr = [];
-
-//     // updateReedFunc(userGallery);
-
-//     if (userGallery) {
-//         const index = userGallery.findIndex(obj => url === obj.url);
-//         newArr.push(...userGallery);
-//         if (index !== -1) {
-//             userGallery[index].readMore = formattedDate;
-//             localStorage.setItem('user-gallery', JSON.stringify(userGallery));
-//             return;
-//         }
-//     }
-
-//     auth.onAuthStateChanged(user => {
-//         console.log(`Авторизований user === ${user.email}`);
-//         currentUser = user.email;
-//         db = getFirestore(firebaseApp);
-//         fetchArrayWithDBReedNews();
-//     });
-
-//     const fetchArrayWithDBReedNews = async () => {
-//         console.log('fetchArrayDBReed');
-//         const docRef = doc(db, currentUser, 'reedNews');
-//         const docSnap = await getDoc(docRef);
-//         if (docSnap.exists()) {
-//             let galery = await docSnap.data().reedNews;
-//             newArr.push(...galery);
-//             console.log(newArr);
-//             const savedLocalNews = localStorage.getItem('bite-search');
-//             JSON.parse(savedLocalNews).map(fetchNew => {
-//                 if (url === fetchNew.url) {
-//                     fetchNew.readMore = formattedDate;
-//                     newArr.push(fetchNew);
-//                     updateReedFunc(newArr);
-//                     localStorage.setItem('user-gallery', JSON.stringify(newArr));
-//                 }
-//             });
-//         } else {
-//             console.log('No such document reedNews!');
-//         }
-//     };
-//     console.log(userGallery);
-
-//     const savedLocalNews = localStorage.getItem('bite-search');
-//     JSON.parse(savedLocalNews).map(fetchNew => {
-//         if (url === fetchNew.url) {
-//             fetchNew.readMore = formattedDate;
-//             newArr.push(fetchNew);
-//             updateReedFunc(newArr)
-//             localStorage.setItem('user-gallery', JSON.stringify(newArr));
-//         }
-//     });
-// };
-
-import { addRemoveDataFavorite } from './addremove-data-favorite';
 import { openCloseNews } from './open-close-news';
-import { load } from '../storage';
+import { load } from '../services/storage';
 import { addOverLay } from '../main';
+import { saveUserNews, verifyUser } from '../db';
+import { checkCurrentLocation } from '../check-current-location';
+import { refs } from '../refs';
+import { hideMainContent, showMainContent } from '../news-not-found';
 
 export const addDataReadNews = e => {
-    addRemoveDataFavorite(e);
     openCloseNews(e);
-    if (!e.target.classList.contains('info__link')) {
-        return;
-    }
-    const url = e.target.href;
-    const todayDate = () => {
-        const date = new Date();
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        return `${day}/${month}/${date.getFullYear()}`;
-    };
-    const formattedDate = todayDate();
-    addOverLay(e);
-    let userGallery = load('user-gallery');
-    let newArr = [];
+    const savedLocalNews = load('bite-search');
+    if (e.target.classList.contains('info__link')) {
+        if (verifyUser()) addOverLay(e);
+        const url = e.target.href;
+        const date = new Date().getTime();
+        savedLocalNews.map(obj => {
+            if (url === obj.url) {
+                obj.readMore = date;
+                saveUserNews(obj, 'read');
+            }
+        });
+    } else if (e.target.classList.contains('news__btn')) {
+        let isContain = false;
+        const url = e.target.id;
+        e.target.textContent.trim() === 'Add to favorite'
+            ? (e.target.innerHTML = `Remove from favorite<svg class="news__btn-icon" width="20" height="20"><use href="#icon-heart-fill"></use></svg>`)
+            : (e.target.innerHTML = `Add to favorite<svg class="news__btn-icon" width="20" height="20"><use href="#icon-heart-border"></use></svg>`);
 
-    if (userGallery) {
-        const index = userGallery.findIndex(obj => url === obj.url);
-        newArr.push(...userGallery);
-        if (index !== -1) {
-            userGallery[index].readMore = formattedDate;
-            localStorage.setItem('user-gallery', JSON.stringify(userGallery));
-            return;
+        if (checkCurrentLocation() === 'favorite') {
+            e.target.parentElement.parentElement.remove();
+            if (refs.favoritesContainer.children.length === 0) {
+                hideMainContent();
+            }
         }
+        savedLocalNews.map(obj => {
+            if (url === obj.url) {
+                obj.favorite = true;
+                isContain = true;
+                saveUserNews(obj, 'favorite');
+            }
+        });
+        if (!isContain) saveUserNews({ url }, 'favorite');
     }
-
-    const savedLocalNews = localStorage.getItem('bite-search');
-    JSON.parse(savedLocalNews).map(obj => {
-        if (url === obj.url) {
-            obj.readMore = formattedDate;
-            newArr.push(obj);
-            // updateReedFunc(newArr)
-            localStorage.setItem('user-gallery', JSON.stringify(newArr));
-        }
-    });
 };

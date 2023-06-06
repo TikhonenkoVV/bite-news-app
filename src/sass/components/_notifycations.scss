@@ -1,0 +1,118 @@
+.js-notifycation-root {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 300px;
+    & * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    z-index: 9999;
+}
+
+.js-notifycation-item {
+    transform: translateX(calc(100% + 15px));
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 30px 10px 20px;
+    border-radius: 5px;
+    background-color: rgb(219, 75, 75);
+    opacity: 0.9;
+    transition: all 250ms;
+}
+
+.js-notifycation-anim {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: 5px;
+    background-color: #000;
+}
+
+.js-notifycation-item:hover .js-notifycation-anim {
+    animation-play-state: paused;
+}
+
+.js-notifycation-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.js-notifycation-box {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    border-radius: 50%;
+    background-color: rgb(180, 41, 41);
+}
+.js-notifycation-icon {
+    width: 30px;
+    height: 30px;
+    fill: rgb(204, 158, 158);
+}
+
+.animation-show {
+    animation-name: show;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+.animation-hide {
+    animation-name: hide;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
+
+.animation-base {
+    animation-play-state: running;
+    animation-name: progress-bar;
+    animation-duration: 5000ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: linear;
+}
+
+@keyframes show {
+    0% {
+        transform: translateX(calc(100% + 15px));
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes hide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(100% + 15px));
+    }
+}
+
+@keyframes progress-bar {
+    0% {
+        width: calc(100% - 10px);
+    }
+    100% {
+        width: 0;
+    }
+}

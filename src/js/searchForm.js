@@ -1,14 +1,13 @@
-import { Notify } from 'notiflix';
 import { fetchSearchArticles } from './fetch';
-import { renderSearchedNews } from './templates/templates';
+import { renderGallery } from './templates/render-gallery';
 import { normalize } from './normalize';
-import { load } from './storage';
+import { load, save } from './services/storage';
 import { createPagination } from './pagination';
-// const throttle = require('lodash.throttle');
 import throttle from 'lodash.throttle';
 import { hideMainContent, showMainContent } from './news-not-found';
-import { refs } from './refs';
 import { selectedDate } from './calendar';
+import { notification } from './services/notification';
+import { refs } from './refs';
 
 export const handleSubmit = async e => {
     e.preventDefault();
@@ -19,7 +18,8 @@ export const handleSubmit = async e => {
     }
     const query = e.target.searchQuery.value.trim();
     if (!query) {
-        Notify.warning('Enter some query');
+        notification('Enter some query');
+        // Notify.warning('Enter some query');
         return;
     }
     try {
@@ -28,21 +28,20 @@ export const handleSubmit = async e => {
         } = await fetchSearchArticles(0, query, selectedDate);
         if (!docs.length) {
             hideMainContent();
-            // Notify.failure('No news founded');
             return;
         }
         showMainContent();
 
         normalize(docs);
-        renderSearchedNews(load('bite-search'), true);
-        createPagination(load('bite-search'), renderSearchedNews);
+        renderGallery(load('bite-search'), true, refs.newsContainer);
+        createPagination(load('bite-search'), renderGallery);
         disableButtons();
         addLoader();
 
         let results = [];
         results.push(...load('bite-search'));
 
-        for (let i = 1; i <= 8; i += 1) {
+        for (let i = 1; i <= 2; i += 1) {
             try {
                 const {
                     response: { docs },
@@ -52,11 +51,12 @@ export const handleSubmit = async e => {
                 }
                 normalize(docs);
                 results.push(...load('bite-search'));
+                save('bite-search', results);
             } catch (err) {
                 console.log(err);
             }
-            await new Promise(res => setTimeout(res, 500));
-            createPagination(results, renderSearchedNews);
+            await new Promise(res => setTimeout(res, 1500));
+            createPagination(results, renderGallery);
             disableButtons();
         }
 
@@ -66,8 +66,8 @@ export const handleSubmit = async e => {
         window.addEventListener(
             'resize',
             throttle(e => {
-                renderSearchedNews(load('bite-search'), true);
-                createPagination(results, renderSearchedNews);
+                renderGallery(load('bite-search'), true);
+                createPagination(results, renderGallery);
             }, 1000)
         );
     } catch (err) {

@@ -2,8 +2,11 @@
     <div class="container__categories">
         <div class="home__category"></div>
         <div class="home__category-dropdown">
-            <button class="home__category-button">
-                Categories
+            <button
+                class="home__category-button js-category-dropdown"
+                type="button"
+            >
+                Others
                 <svg class="home__category-button-icon" width="14" height="14">
                     <use
                         class="home__category-button-icon--open"
@@ -15,7 +18,7 @@
                     ></use>
                 </svg>
             </button>
-            <div class="home__dropdown-menu hidden"></div>
+            <div aria-expanded="false" class="home__dropdown-menu hidden"></div>
         </div>
         <div class="home__picker-box">
             <input

@@ -1,6 +1,7 @@
 export const checkCurrentLocation = () => {
     const currentLocation = window.location.pathname;
-    if (currentLocation.includes('favorite')) return 'favorite';
-    if (currentLocation.includes('read')) return 'read';
-    return 'index';
+    let res = 'index';
+    if (currentLocation.includes('favorite')) res = 'favorite';
+    if (currentLocation.includes('read')) res = 'read';
+    return res;
 };

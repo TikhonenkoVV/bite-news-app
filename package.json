@@ -22,9 +22,9 @@
         "body-scroll-lock": "^4.0.0-beta.0",
         "calendar-dates": "^2.7.2",
         "flatpickr": "^4.6.13",
+        "lodash.debounce": "^4.0.8",
         "lodash.throttle": "^4.1.1",
-        "modern-normalize": "^1.1.0",
-        "notiflix": "^3.2.6"
+        "modern-normalize": "^1.1.0"
     },
     "devDependencies": {
         "@parcel/transformer-sass": "^2.6.0",

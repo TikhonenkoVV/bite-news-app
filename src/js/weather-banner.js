@@ -176,5 +176,5 @@ function getCurrentDate(date) {
 
 export function displayBanner() {
     const gridBox = document.querySelector('.grid-box');
-    gridBox.classList.remove('banner-hidden');
+    gridBox.classList.add('banner-hidden');
 }

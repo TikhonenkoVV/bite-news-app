@@ -1,6 +1,7 @@
 import { refs } from './refs';
 let newsPerPage;
 import { removeLoader } from './searchForm';
+import { displayBanner } from './weather-banner';
 
 export function createPagination(newsArray, funcForRenderingMarkup) {
     setNumberOfNewsperPage();
@@ -15,7 +16,7 @@ export function createPagination(newsArray, funcForRenderingMarkup) {
         totalPages: Math.ceil((newsArray.length + 1) / (newsPerPage + 1)),
     };
 
-    if(valuePage.totalPages <= 1) {
+    if (valuePage.totalPages <= 1) {
         refs.pgWrapper.classList.add('visually-hidden');
         removeLoader();
         return;
@@ -51,21 +52,24 @@ export function createPagination(newsArray, funcForRenderingMarkup) {
                 array = newsArray.slice(start, end);
             }
 
-            if (pageNumber == 1) {
-                refs.gridBox.classList.remove('banner-hidden');
-                funcForRenderingMarkup(array, true);
-            } else {
-                refs.gridBox.classList.add('banner-hidden');
-                funcForRenderingMarkup(array, false);
-            }
+            // if (pageNumber == 1) {
+            //     refs.gridBox.classList.remove('banner-hidden');
+            //     funcForRenderingMarkup(array, true, refs.newsContainer);
+            // } else {
+            //     refs.gridBox.classList.add('banner-hidden');
+            //     funcForRenderingMarkup(array, false, refs.newsContainer);
+            // }
+            funcForRenderingMarkup(array, false, refs.newsContainer);
         }
     });
-    
+
     fixScreenHeight();
 }
 
 function pagination(valuePage) {
     const { totalPages, curPage, numLinksTwoSide: delta } = valuePage;
+
+    if (curPage > 1) displayBanner();
 
     let range;
     if (window.matchMedia('(max-width: 767px)').matches) {

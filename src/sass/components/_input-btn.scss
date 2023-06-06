@@ -1,0 +1,32 @@
+.input-btn {
+    // position: absolute;
+    // bottom: 0;
+    // right: 8px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.input-btn__icon {
+    pointer-events: none;
+}
+
+.input-btn__icon .input-btn__use {
+    transition: opacity $baseTransition;
+}
+
+.input-btn__use {
+    opacity: 0;
+}
+
+.input-btn__use.show {
+    opacity: 1;
+}

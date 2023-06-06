@@ -112,19 +112,19 @@
     color: var(--colorTextDark);
 }
 
-.autorize__password-access {
+.autorize__input-btn {
     position: absolute;
     bottom: 0;
     right: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 35px;
-    height: 35px;
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: none;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // width: 35px;
+    // height: 35px;
+    // margin: 0;
+    // padding: 0;
+    // border: none;
+    // background: none;
 }
 
 .autorize__icon {
@@ -162,6 +162,7 @@
     gap: 20px;
     align-items: center;
     padding-top: 23px;
+    cursor: pointer;
 }
 
 .autorize__field.togler > span {

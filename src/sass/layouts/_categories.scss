@@ -10,9 +10,10 @@
 }
 
 .home__category {
-    display: flex;
-    gap: 14px;
+    display: none;
+    // gap: 14px;
     @include for-size(tablet) {
+        display: flex;
         gap: 16px;
     }
 }
@@ -91,17 +92,14 @@
 
     .home__dropdown-menu {
         position: absolute;
-        right: -30px;
+        left: 0;
         top: 35px;
         max-height: 380px;
         max-width: 148px;
         background-color: var(--colorCategoriesBackgroundSelect);
         border-radius: 20px;
-        padding: 8px;
-        display: flex;
-        flex-direction: column;
+        padding: 8px 24px;
         align-items: flex-start;
-        gap: 12px;
         overflow-y: auto;
         z-index: 3;
 
@@ -112,6 +110,19 @@
         &::-webkit-scrollbar {
             width: 0px;
             background-color: transparent;
+        }
+        & button {
+            width: 100%;
+            padding: 6px 0;
+            font-size: 12px;
+            background: none;
+            color: var(--colorTextCategoryBtn);
+            border: none;
+            text-align: left;
+        }
+        & button:hover,
+        & button:focus {
+            text-decoration-line: underline;
         }
     }
 }

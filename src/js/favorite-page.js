@@ -1,76 +1,76 @@
+import { loadUserNews, verifyUser } from './db';
+import { hideMainContent, showMainContent } from './news-not-found';
+import { sortUserNews } from './read/sort-news-data';
 import { refs } from './refs';
-import { load } from './storage';
+import { formShow } from './sign-in-up';
 
-export function favoriteRender() {
-    if (!load('user-gallery')) return;
-    renderFavoritesCardsInLibrary(load('user-gallery'), true);
-}
+// функція що рендерить
+// function renderFavoritesCardsInLibrary(results) {
 
-export function onFavoriteBtnRemoveClick(e) {
-    if (e.target.nodeName !== 'BUTTON') {
+export const favoriteRender = () => {
+    const autorizedUser = verifyUser();
+    if (!autorizedUser) {
+        refs.backdrop.classList.remove('is-hidden');
+        formShow();
         return;
     }
-    const savedLocalNews = localStorage.getItem('user-gallery');
-    const results = JSON.parse(savedLocalNews);
-    const url = e.target.id;
-    results.map(obj => {
-        if (obj.url !== url) return;
-        obj.favorite = false;
-    });
-    localStorage.setItem('user-gallery', JSON.stringify(results));
-    renderFavoritesCardsInLibrary(results);
-}
-// функція що рендерить
-function renderFavoritesCardsInLibrary(results) {
-    const favoritesList = results
+    let isFavorite = undefined;
+    const isLoadNews = loadUserNews();
+    if (isLoadNews)
+        isFavorite = loadUserNews().find(el => el.favorite === true);
+    if (!isLoadNews || !isFavorite) {
+        hideMainContent();
+        return;
+    }
+    showMainContent();
+    const array = sortUserNews(loadUserNews(), true);
+    const favoritesList = array
         .map(
-            (
-                {
-                    imgUrl,
-                    title,
-                    section,
-                    abstract,
-                    published_date,
-                    url,
-                    favorite,
-                },
-                index
-            ) => {
-                if (!favorite === true) {
-                    return;
+            ({
+                readMore,
+                imgUrl,
+                title,
+                section,
+                abstract,
+                published_date,
+                url,
+            }) => {
+                let overlayClass = 'overlay visually-hidden';
+                if (readMore !== '') {
+                    overlayClass = 'overlay';
                 }
-                if (window.matchMedia('(min-width: 1280px)').matches) {
-                    if (index > 8) {
-                        return;
-                    }
-                } else if (window.matchMedia('(min-width: 768px)').matches) {
-                    if (index > 7) {
-                        return;
-                    }
-                } else {
-                    if (index > 4) {
-                        return;
-                    }
-                }
-                return `<div class="news__item-favorite">
-        <p class="news__section">${section}</p>
-        <div class="news__img">
-          <img src="${imgUrl}" alt="${title}" loading="lazy"/>
-          <button id="${url}" type="button" class="news__btn favorites_btn" onClick = "removeItem()" >Remove from favorite
-          <svg class="news__btn-icon" width="20" height="20">
-            <use href="#icon-heart-fill"></use>
-            </svg></button></div>
-        <div class="info">
-          <p class="info__title">${title}</p>
-          <p class="info__abstract">${abstract}</p>
-          <p class="info__published-date">${published_date}</p>
-          <a href="${url}" target="_blank"
+                return `
+<div class="news__item-favorite">
+    <p class="news__section">${section}</p>
+    <div class="news__img">
+        <img src="${imgUrl}" alt="${title}" loading="lazy"/>
+        <button id="${url}" type="button" class="news__btn favorites_btn" >Remove from favorite
+            <svg class="news__btn-icon" width="20" height="20">
+                <use href="#icon-heart-fill"></use>
+            </svg>
+        </button>
+    </div>
+    <div class="info">
+        <p class="info__title">${title}</p>
+        <p class="info__abstract">${abstract}</p>
+        <p class="info__published-date">${published_date}</p>
+        <a
+            href="${url}"
+            target="_blank"
             rel="noopener noreferrer nofollow"
-             class="info__link">Read more</a>
-        </div></div>`;
+            class="info__link">
+            Read more
+        </a>
+        <p class="${overlayClass}">Already read
+            <svg class="already" width="20" height="20">
+                <use href="#icon-already-read"></use>
+            </svg>
+        </p>
+    </div>
+</div>`;
             }
         )
         .join('');
 
     refs.favoritesContainer.innerHTML = favoritesList;
-}
+};
