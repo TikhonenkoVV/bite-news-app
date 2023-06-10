@@ -1,0 +1,66 @@
+[
+    {
+        "tikhonenko-vv@ukr.net": {
+            "profile": {
+                "user": "Tikhonenko",
+                "password": "123456"
+            }
+        }
+    },
+    {
+        "mo144@mail.com": {
+            "profile": {
+                "user": "Vitaliy",
+                "password": "123456"
+            }
+        }
+    },
+    {
+        "tikhonenko-vv@ua.net": {
+            "profile": {
+                "user": "Tikhonenko",
+                "password": "123456"
+            }
+        }
+    },
+    {
+        "mo_144@ukr.net": {
+            "profile": {
+                "user": "Vitaliy",
+                "password": "123456"
+            }
+        }
+    },
+    {
+        "mo_144@ty.net": {
+            "profile": {
+                "user": "Vitaliy",
+                "password": "123456"
+            }
+        }
+    },
+    {
+        "vv@ukr.net": {
+            "profile": {
+                "user": "Vitaliy",
+                "password": "456"
+            }
+        }
+    },
+    {
+        "mo144@ukr.net": {
+            "profile": {
+                "user": "Vitaliy",
+                "password": "789456"
+            }
+        }
+    },
+    {
+        "test777@test.com": {
+            "profile": {
+                "user": "Testuser",
+                "password": "123456qQ"
+            }
+        }
+    }
+]

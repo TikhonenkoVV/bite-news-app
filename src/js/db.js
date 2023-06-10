@@ -20,6 +20,7 @@ export const verifyUser = () => {
 export const chkAvaibleUserLogin = (email, pass) => {
     let avaibleUser;
     const loadUserData = load(BITE_DB);
+    if (!loadUserData) return false;
     loadUserData.map(key => {
         if (key.hasOwnProperty(email)) {
             if (!pass) {
