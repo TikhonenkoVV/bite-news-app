@@ -15,11 +15,23 @@ import { markupProfileMenu } from './js/templates/render-profile-menu';
 import { formClose, resetStyle } from './js/sign-in-up';
 import { enableBodyScroll } from 'body-scroll-lock';
 import { renderGallery } from './js/templates/render-gallery';
-import { loadUserNews } from './js/db';
+import { loadUserNews, setAuthHeader, verifyUser } from './js/db';
 import { hideMainContent, showMainContent } from './js/news-not-found';
 import { sortUserNews } from './js/read/sort-news-data';
+import { load, save } from './js/services/storage';
+import { AUTHORIZED, TOKENS } from './js/utils/constants';
 
-const currentLocation = checkCurrentLocation();
+export const tokens = load(TOKENS);
+
+if (tokens) {
+    setAuthHeader(tokens.accessToken);
+    verifyUser()
+        .then(data => {
+            save(AUTHORIZED, data);
+            markupProfileMenu();
+        })
+        .catch(err => console.log(err.message));
+}
 
 markupProfileMenu();
 
@@ -55,32 +67,34 @@ checkCurrentTheme();
 handleScreenSizeChange();
 
 refs.newsContainer.addEventListener('click', addDataReadNews);
-if (refs.categoriesBtns && refs.categoriesDropdownBtn) {
-    refs.categoriesDropdownBtn.addEventListener('click', closeDropdownMenu);
-}
+// if (refs.categoriesBtns && refs.categoriesDropdownBtn) {
+//     refs.categoriesDropdownBtn.addEventListener('click', closeDropdownMenu);
+// }
 
-if (currentLocation === 'index') {
-    refs.categoriesContainer.addEventListener('click', onClickBtns);
-    allData();
-    setTimeout(() => {
-        onBannerLoad();
-    }, 300);
-}
+// if (currentLocation === 'index') {
+//     refs.categoriesContainer.addEventListener('click', onClickBtns);
+//     allData();
+//     setTimeout(() => {
+//         onBannerLoad();
+//     }, 300);
+// }
 
-if (currentLocation === 'favorite') {
-    const isLoadNews = loadUserNews();
-    if (isLoadNews)
-        isFavorite = loadUserNews().find(el => el.favorite === true);
-    if (!isLoadNews || !isFavorite) {
-        hideMainContent();
-        return;
-    }
-    showMainContent();
-    const array = sortUserNews(loadUserNews(), true);
-    renderGallery(array, false, refs.favoritesContainer);
-    return;
-}
-if (currentLocation === 'read') {
-    renderGalleryReadOnDays();
-    return;
-}
+// if (currentLocation === 'favorite') {
+//     loadUserNews().then(data =>
+//         renderGallery(data, false, refs.favoritesContainer)
+//     );
+// if (isLoadNews)
+//     isFavorite = loadUserNews().find(el => el.favorite === true);
+// if (!isLoadNews || !isFavorite) {
+//     hideMainContent();
+//     return;
+// }
+// showMainContent();
+// const array = sortUserNews(loadUserNews(), true);
+// renderGallery(isLoadNews, false, refs.favoritesContainer);
+//     return;
+// }
+// if (currentLocation === 'read') {
+//     renderGalleryReadOnDays();
+//     return;
+// }

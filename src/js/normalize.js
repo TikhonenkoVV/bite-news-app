@@ -1,7 +1,5 @@
-import { save } from './services/storage';
 import { BASE_IMG_URL } from './utils/constants';
 import noPoster from '../images/no_poster.jpg';
-import { findUserNews } from './find-user-news';
 
 export const normalize = result => {
     if (result[0].hasOwnProperty('published_date')) {
@@ -9,27 +7,23 @@ export const normalize = result => {
             const res = result.map(
                 ({ published_date, section, abstract, media, title, url }) => {
                     let imgUrl = '';
-                    const favorite = false;
-                    const readMore = '';
                     const arrImg = media[0];
                     if (arrImg !== undefined) {
                         imgUrl = arrImg['media-metadata'][2].url;
                     } else imgUrl = noPoster;
 
                     return {
-                        favorite,
-                        readMore,
-                        imgUrl,
                         title,
-                        section,
                         abstract,
-                        published_date,
+                        section,
                         url,
+                        imgUrl,
+                        published_date,
+                        favorite: false,
+                        readed: false,
                     };
                 }
             );
-            findUserNews(res);
-            save('bite-search', res);
 
             return res;
         }
@@ -43,27 +37,22 @@ export const normalize = result => {
                     title,
                     url,
                 }) => {
-                    let imgUrl = '';
-                    const favorite = false;
-                    const readMore = '';
-                    imgUrl =
+                    let imgUrl =
                         multimedia && multimedia.length > 0
                             ? multimedia[2].url
                             : noPoster;
                     return {
-                        favorite,
-                        readMore,
-                        imgUrl,
                         title,
-                        section,
                         abstract,
-                        published_date,
+                        section,
                         url,
+                        imgUrl,
+                        published_date,
+                        favorite: false,
+                        readed: false,
                     };
                 }
             );
-            findUserNews(res);
-            save('bite-search', res);
 
             return res;
         }
@@ -79,8 +68,6 @@ export const normalize = result => {
                 web_url,
             }) => {
                 let imgUrl = '';
-                const favorite = false;
-                const readMore = '';
                 const arrImg = multimedia[0];
                 if (arrImg !== undefined) {
                     imgUrl = BASE_IMG_URL + arrImg.url;
@@ -91,19 +78,17 @@ export const normalize = result => {
                 const url = web_url;
 
                 return {
-                    favorite,
-                    readMore,
-                    imgUrl,
                     title,
-                    section,
                     abstract,
-                    published_date,
+                    section,
                     url,
+                    imgUrl,
+                    published_date,
+                    favorite: false,
+                    readed: false,
                 };
             }
         );
-        findUserNews(res);
-        save('bite-search', res);
 
         return res;
     }

@@ -1,11 +1,10 @@
 import { checkCurrentLocation } from '../check-current-location';
-import { verifyUser } from '../db';
-import { refs } from '../refs';
 import { formatDate } from '../services/format-date';
 import { load } from '../services/storage';
+import { AUTHORIZED } from '../utils/constants';
 
-export function renderGallery(gallery, ifFirstPage, container) {
-    const autorizedUser = verifyUser();
+export const renderGallery = (gallery, ifFirstPage, container) => {
+    const autorizedUser = load(AUTHORIZED);
     let hiddenClass = '';
     let noTrasfer = '';
     if (
@@ -14,12 +13,22 @@ export function renderGallery(gallery, ifFirstPage, container) {
     )
         noTrasfer = ' news__item-favorite';
     if (!autorizedUser) hiddenClass = ' visually-hidden';
-    let userGallery = load(autorizedUser);
 
     const gallaryMarkup = gallery
         .map(
             (
-                { imgUrl, title, section, abstract, published_date, url },
+                {
+                    _id,
+                    dataId,
+                    title,
+                    abstract,
+                    section,
+                    url,
+                    imgUrl,
+                    published_date,
+                    favorite,
+                    readed,
+                },
                 index
             ) => {
                 if (checkCurrentLocation() === 'index') {
@@ -42,21 +51,16 @@ export function renderGallery(gallery, ifFirstPage, container) {
                     }
                 }
                 const newDate = formatDate(published_date.split('T')[0]);
+
                 let newsBtnText = 'Add to favorite';
                 let iconUse = '<use href="#icon-heart-border"></use>';
                 let overlayClass = 'overlay visually-hidden';
-                let allAvailable = null;
-                if (userGallery) {
-                    allAvailable = userGallery.find(card => card.url === url);
-                    if (allAvailable) {
-                        if (allAvailable.favorite === true) {
-                            newsBtnText = 'Remove from favorite';
-                            iconUse = '<use href="#icon-heart-fill"></use>';
-                        }
-                        if (allAvailable.readMore !== '') {
-                            overlayClass = 'overlay';
-                        }
-                    }
+                if (favorite) {
+                    newsBtnText = 'Remove from favorite';
+                    iconUse = '<use href="#icon-heart-fill"></use>';
+                }
+                if (readed) {
+                    overlayClass = 'overlay';
                 }
 
                 return `
@@ -64,7 +68,9 @@ export function renderGallery(gallery, ifFirstPage, container) {
                         <p class="news__section">${section}</p>
                         <div class="news__img">
                             <img src="${imgUrl}" alt="${title}" loading="lazy"/>
-                            <button id="${url}" type="button" class="news__btn${hiddenClass}">${newsBtnText}
+                            <button id="${url}" data-id="${
+                    _id ? _id : dataId ? dataId : 'noid'
+                }" type="button" class="news__btn${hiddenClass}">${newsBtnText}
                                 <svg class="news__btn-icon" width="20" height="20">
                                     ${iconUse}
                                 </svg>
@@ -92,5 +98,4 @@ export function renderGallery(gallery, ifFirstPage, container) {
         )
         .join('');
     container.innerHTML = gallaryMarkup;
-    // refs.newsContainer.innerHTML = gallaryMarkup;
-}
+};

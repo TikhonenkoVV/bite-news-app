@@ -1,17 +1,10 @@
 import { formatDate, numToDateStr } from '../services/format-date';
 
-export const sortUserNews = (userNews, value) => {
-    let filterArray;
+export const sortUserNews = userNews => {
     let result;
-    if (value === true) {
-        filterArray = userNews.filter(({ favorite }) => favorite === value);
-        result = filterArray;
-        return result;
-    }
-    filterArray = userNews.filter(({ readMore }) => readMore !== value);
 
-    const groupedByKey = filterArray.reduce((acc, obj) => {
-        const key = numToDateStr(obj.readMore);
+    const groupedByKey = userNews.reduce((acc, obj) => {
+        const key = numToDateStr(obj.createdAt);
         const collection = acc.get(key);
         if (!collection) {
             acc.set(key, [obj]);

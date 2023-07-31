@@ -1,9 +1,15 @@
+import { loadUserNews } from './db';
+import { sortUserNews } from './read/sort-news-data';
 import { refs } from './refs';
-let newsPerPage;
 import { removeLoader } from './searchForm';
+import { load } from './services/storage';
+import { SEARCH_RES } from './utils/constants';
 import { displayBanner } from './weather-banner';
 
+let newsPerPage;
+
 export function createPagination(newsArray, funcForRenderingMarkup) {
+    displayBanner(true);
     setNumberOfNewsperPage();
     refs.pgWrapper.classList.remove('visually-hidden');
     refs.btnNextPg.classList.remove('visually-hidden');
@@ -40,16 +46,17 @@ export function createPagination(newsArray, funcForRenderingMarkup) {
         handleButton(e.target, valuePage);
 
         if (e.target.nodeName === 'LI' || e.target.nodeName === 'BUTTON') {
+            const updatedNewsArray = load(SEARCH_RES);
             let pageNumber = valuePage.curPage;
             let array = [];
             if (pageNumber === 1) {
                 const start = (pageNumber - 1) * newsPerPage;
                 const end = start + newsPerPage;
-                array = newsArray.slice(start, end);
+                array = updatedNewsArray.slice(start, end);
             } else {
                 const start = (pageNumber - 1) * (newsPerPage + 1) - 1;
                 const end = start + (newsPerPage + 1);
-                array = newsArray.slice(start, end);
+                array = updatedNewsArray.slice(start, end);
             }
 
             // if (pageNumber == 1) {
@@ -59,9 +66,21 @@ export function createPagination(newsArray, funcForRenderingMarkup) {
             //     refs.gridBox.classList.add('banner-hidden');
             //     funcForRenderingMarkup(array, false, refs.newsContainer);
             // }
+
+            // loadUserNews().then(data => {
+            //     const sortedNews = sortUserNews(array, data);
+            //     console.log('sortedNews', sortedNews);
+            //     funcForRenderingMarkup(
+            //         ...sortedNews,
+            //         false,
+            //         refs.newsContainer
+            //     );
+            // });
             funcForRenderingMarkup(array, false, refs.newsContainer);
         }
     });
+
+    funcForRenderingMarkup(newsArray, true, refs.newsContainer);
 
     fixScreenHeight();
 }
@@ -69,7 +88,7 @@ export function createPagination(newsArray, funcForRenderingMarkup) {
 function pagination(valuePage) {
     const { totalPages, curPage, numLinksTwoSide: delta } = valuePage;
 
-    if (curPage > 1) displayBanner();
+    if (curPage > 1) displayBanner(false);
 
     let range;
     if (window.matchMedia('(max-width: 767px)').matches) {

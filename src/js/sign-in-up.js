@@ -1,58 +1,23 @@
 import { refs } from './refs';
-import { load, save } from './services/storage';
-import { chkAvaibleUserLogin, loadUserNews, regUser } from './db';
+import { save } from './services/storage';
+import { signIn, signUp } from './db';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-import { checkCurrentLocation } from './check-current-location';
-import { renderGalleryReadOnDays } from './templates/render-markup-read';
-import { favoriteRender } from './favorite-page';
-import { markupProfileMenu } from './templates/render-profile-menu';
-import { renderGallery } from './templates/render-gallery';
-import { AUTORIZED_USER } from './utils/constants';
+import { TOKENS } from './utils/constants';
 import { notification } from './services/notification';
 import { testInput } from './services/test-input';
+import { hideLoader, showLoader } from './services/toggleLoader';
 
-export let signInformData = {};
-export let signUpformData = {};
-
-export const onSignInSubmit = e => {
-    e.preventDefault();
-    const {
-        elements: { email, password },
-    } = e.currentTarget;
-    const avaibleUser = chkAvaibleUserLogin(email.value, password.value);
-    signInformData = {
-        email: email.value,
-        password: password.value,
-    };
-    if (email.value === '' || password.value === '') {
-        notification('Fields cannot be empty');
-        return;
-    }
-    if (!avaibleUser) {
-        notification('Wrong username or password');
-        return;
-    }
-    const userName = avaibleUser[email.value].profile.user;
-    e.target.classList.add('hide');
-    refs.autorizeNav.classList.add('hide');
-    refs.formSignIn.classList.add('hide');
-    refs.profilePhoto.classList.add('show');
-    refs.wellcomeLeyout.classList.add('show');
-    refs.autorizeTitle.textContent = `Welcome, ${userName}!`;
-    refs.profileBtn.classList.remove('hide');
-    save(AUTORIZED_USER, { autorized: email.value, userName: userName });
-    e.currentTarget.reset();
-    refs.formSignUp.reset();
-};
-
-export const onSignUpSubmit = e => {
+export const onSignUpSubmit = async e => {
     e.preventDefault();
     const {
         elements: { user, email, password, confirmpassword },
     } = e.currentTarget;
-    const avaibleUser = chkAvaibleUserLogin(email.value, null);
-    signUpformData = {
-        user: user.value,
+    const signUpformData = {
+        name: user.value,
+        email: email.value,
+        password: password.value,
+    };
+    const signInformData = {
         email: email.value,
         password: password.value,
     };
@@ -65,10 +30,6 @@ export const onSignUpSubmit = e => {
         notification('Fields cannot be empty');
         return;
     }
-    if (avaibleUser) {
-        notification('This email is in use. If this is you, then sign in.');
-        return;
-    }
     if (testInput(password.value)) {
         notification(testInput(password.value));
         return;
@@ -77,17 +38,59 @@ export const onSignUpSubmit = e => {
         notification('Passwords did not match.');
         return;
     }
-    e.target.classList.add('hide');
-    refs.autorizeNav.classList.add('hide');
-    refs.formSignUp.classList.add('hide');
-    refs.autorizeAnime.classList.add('show');
-    refs.wellcomeLeyout.classList.add('show');
-    refs.autorizeTitle.textContent = 'Thank you for registering!';
-    refs.profileBtn.classList.remove('hide');
-    save(AUTORIZED_USER, { autorized: email.value, userName: user.value });
-    regUser(signUpformData);
-    refs.formSignIn.reset();
-    e.currentTarget.reset();
+    showLoader();
+    const status = await signUp(signUpformData);
+    if (status === 201) {
+        e.target.classList.add('hide');
+        refs.autorizeNav.classList.add('hide');
+        refs.formSignUp.classList.add('hide');
+        refs.autorizeAnime.classList.add('show');
+        refs.wellcomeLeyout.classList.add('show');
+        refs.autorizeTitle.textContent = 'Thank you for registering!';
+        refs.profileBtn.classList.remove('hide');
+        refs.formSignIn.reset();
+        e.target.reset();
+        const userData = await signIn(signInformData);
+        save(TOKENS, {
+            accessToken: userData.tokens.accessToken,
+            refreshToken: userData.tokens.refreshToken,
+        });
+    } else notification('User already exist');
+    hideLoader();
+};
+
+export const onSignInSubmit = async e => {
+    e.preventDefault();
+    const {
+        elements: { email, password },
+    } = e.currentTarget;
+    const signInformData = {
+        email: email.value,
+        password: password.value,
+    };
+    console.log(signInformData);
+    if (email.value === '' || password.value === '') {
+        notification('Fields cannot be empty');
+        return;
+    }
+    showLoader();
+    const res = await signIn(signInformData);
+    hideLoader();
+    if (res) {
+        e.target.classList.add('hide');
+        refs.autorizeNav.classList.add('hide');
+        refs.formSignIn.classList.add('hide');
+        refs.profilePhoto.classList.add('show');
+        refs.wellcomeLeyout.classList.add('show');
+        refs.autorizeTitle.textContent = `Welcome, ${res.user.name}!`;
+        refs.profileBtn.classList.remove('hide');
+        save(TOKENS, {
+            accessToken: res.tokens.accessToken,
+            refreshToken: res.tokens.refreshToken,
+        });
+        e.target.reset();
+        refs.formSignUp.reset();
+    } else notification('Wrong username or password');
 };
 
 export const onSignInUpNavClick = e => {
@@ -121,18 +124,7 @@ export const onSignInBtnCloseClick = () => {
     enableBodyScroll(document.body);
     refs.backdrop.classList.add('is-hidden');
     refs.autorizeModal.classList.add('is-hidden');
-
-    if (checkCurrentLocation() === 'favorite') {
-        renderGallery(loadUserNews(), false, refs.favoritesContainer);
-        // favoriteRender();
-    }
-    if (checkCurrentLocation() === 'read') {
-        renderGalleryReadOnDays();
-    }
-    if (checkCurrentLocation() === 'index') {
-        renderGallery(load('bite-search'), true, refs.newsContainer);
-    }
-    markupProfileMenu();
+    location.reload();
 };
 
 const onPassAccessBtnClick = e => {

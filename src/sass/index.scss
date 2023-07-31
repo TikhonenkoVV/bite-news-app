@@ -7,6 +7,7 @@
 @import './components/container';
 @import './layouts/backdrop';
 @import './components/sign-in-up-modal';
+@import './components/loader';
 @import './components/user-profile';
 @import './components/input-btn';
 @import './components/sign-in-up-togler';
@@ -19,7 +20,7 @@
 @import './components/togler-mobile';
 @import './components/togler';
 @import './layouts/categories';
-@import './layouts/main.scss';
+@import './layouts/main';
 @import './layouts/footer';
 @import './components/weather';
 @import './utils/vh';

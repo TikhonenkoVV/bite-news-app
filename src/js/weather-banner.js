@@ -174,7 +174,9 @@ function getCurrentDate(date) {
     return `${dayOfWeek}<br>${currentDay} ${currentMonth} ${currentYear}`;
 }
 
-export function displayBanner() {
+export function displayBanner(status) {
     const gridBox = document.querySelector('.grid-box');
-    gridBox.classList.add('banner-hidden');
+    !status
+        ? gridBox.classList.add('banner-hidden')
+        : gridBox.classList.remove('banner-hidden');
 }

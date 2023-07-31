@@ -1,20 +1,19 @@
-import { verifyUser } from '../db';
 import { onProfileItemClick } from '../profile-menu';
 import { refs } from '../refs';
 import { load } from '../services/storage';
-import { AUTORIZED_USER } from '../utils/constants';
+import { AUTHORIZED } from '../utils/constants';
 
 export const markupProfileMenu = () => {
-    const autorizedUser = verifyUser();
+    const autorizedUser = load(AUTHORIZED);
     let caption = 'Unauthorized';
-    let userName = 'user';
+    let userName = '';
     let idFirstLink = 'sign-in';
     let idSecondLink = 'sign-up';
     let firstLinkString = 'Sign in';
     let secondLinkString = 'Sign up';
     if (autorizedUser) {
         caption = 'Autorized as';
-        userName = load(AUTORIZED_USER).userName;
+        userName = autorizedUser.name;
         idFirstLink = 'profile';
         idSecondLink = 'sign-out';
         firstLinkString = 'Your profile';

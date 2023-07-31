@@ -1,30 +1,80 @@
-import { openCloseNews } from './open-close-news';
-import { load } from '../services/storage';
+import { load, save } from '../services/storage';
 import { addOverLay } from '../main';
-import { saveUserNews, verifyUser } from '../db';
+import { addUserNews, remoweNews, updateFavorite } from '../db';
 import { checkCurrentLocation } from '../check-current-location';
 import { refs } from '../refs';
-import { hideMainContent, showMainContent } from '../news-not-found';
+import { hideMainContent } from '../news-not-found';
+import { tokens } from '../..';
+import { SEARCH_RES } from '../utils/constants';
+import { hideLoader, showLoader } from '../services/toggleLoader';
 
-export const addDataReadNews = e => {
-    openCloseNews(e);
-    const savedLocalNews = load('bite-search');
+export const addDataReadNews = async e => {
+    const savedLocalNews = load(SEARCH_RES);
+    let newArr = [];
     if (e.target.classList.contains('info__link')) {
-        if (verifyUser()) addOverLay(e);
-        const url = e.target.href;
-        const date = new Date().getTime();
-        savedLocalNews.map(obj => {
-            if (url === obj.url) {
-                obj.readMore = date;
-                saveUserNews(obj, 'read');
-            }
-        });
+        if (tokens) {
+            showLoader();
+            addOverLay(e);
+            const url = e.target.href;
+            let newObj;
+            savedLocalNews.map(obj => {
+                if (url === obj.url) {
+                    if (obj.readed === true) {
+                        return;
+                    }
+                    obj.readed = true;
+                    newObj = obj;
+                }
+                newArr.push(obj);
+            });
+            if (newObj) await addUserNews(newObj);
+            hideLoader();
+        }
     } else if (e.target.classList.contains('news__btn')) {
-        let isContain = false;
+        let favoriteStatus;
+        if (e.target.textContent.trim() === 'Add to favorite') {
+            e.target.innerHTML = `Remove from favorite<svg class="news__btn-icon" width="20" height="20"><use href="#icon-heart-fill"></use></svg>`;
+            favoriteStatus = true;
+        } else {
+            e.target.innerHTML = `Add to favorite<svg class="news__btn-icon" width="20" height="20"><use href="#icon-heart-border"></use></svg>`;
+            favoriteStatus = false;
+        }
+
         const url = e.target.id;
-        e.target.textContent.trim() === 'Add to favorite'
-            ? (e.target.innerHTML = `Remove from favorite<svg class="news__btn-icon" width="20" height="20"><use href="#icon-heart-fill"></use></svg>`)
-            : (e.target.innerHTML = `Add to favorite<svg class="news__btn-icon" width="20" height="20"><use href="#icon-heart-border"></use></svg>`);
+        const dataSetId = e.target.dataset.id;
+        if (dataSetId !== 'noid') {
+            showLoader();
+            savedLocalNews.map(obj => {
+                if (url === obj.url) {
+                    obj.favorite = true;
+                }
+                newArr.push(obj);
+            });
+            const currentNews = await updateFavorite(dataSetId, favoriteStatus);
+            if (!currentNews.readed) {
+                await remoweNews(dataSetId);
+                e.target.dataset.id = 'noid';
+            }
+            hideLoader();
+        } else {
+            showLoader();
+            let newObj;
+            let objId;
+            savedLocalNews.map((obj, i) => {
+                if (url === obj.url) {
+                    obj.favorite = true;
+                    newObj = obj;
+                    objId = i;
+                }
+                newArr.push(obj);
+            });
+            const res = await addUserNews(newObj);
+            newObj._id = res._id;
+            newObj.dataId = res._id;
+            e.target.dataset.id = res._id;
+            newArr.splice(objId, 1, newObj);
+            hideLoader();
+        }
 
         if (checkCurrentLocation() === 'favorite') {
             e.target.parentElement.parentElement.remove();
@@ -32,13 +82,6 @@ export const addDataReadNews = e => {
                 hideMainContent();
             }
         }
-        savedLocalNews.map(obj => {
-            if (url === obj.url) {
-                obj.favorite = true;
-                isContain = true;
-                saveUserNews(obj, 'favorite');
-            }
-        });
-        if (!isContain) saveUserNews({ url }, 'favorite');
     }
+    save(SEARCH_RES, newArr);
 };

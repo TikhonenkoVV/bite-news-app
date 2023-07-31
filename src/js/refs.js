@@ -1,6 +1,7 @@
 export const refs = {
     // backrop and modal windows refs
     backdrop: document.querySelector('.backdrop'),
+    loader: document.querySelector('.loader'),
     autorizeModal: document.querySelector('.autorize__container'),
     userProfile: document.querySelector('.user-profile'),
     userNameInput: document.querySelector('input[name="user_name"]'),

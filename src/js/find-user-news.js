@@ -1,17 +1,12 @@
-import { load } from './services/storage';
-import { AUTORIZED_USER } from './utils/constants';
-
-export const findUserNews = data => {
-    if (!load(AUTORIZED_USER)) return;
-    const autorizedUser = load(AUTORIZED_USER).autorized;
-    const userData = load(autorizedUser);
-    if (!autorizedUser || !userData) return false;
+export const findUserNews = (normalizeNews, userNews) => {
     let res = [];
-    data.map(obj => {
-        userData.map(el => {
+    normalizeNews.map(obj => {
+        userNews.map(el => {
             if (el.url === obj.url) {
+                obj._id = el._id;
+                obj.dataId = el._id;
                 obj.favorite = el.favorite;
-                obj.readMore = el.readMore;
+                obj.readed = el.readed;
             }
         });
         res.push(obj);

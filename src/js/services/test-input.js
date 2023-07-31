@@ -39,7 +39,6 @@ export const testInput = input => {
     if (!/^.{8,16}$/.test(input)) {
         testLength = 'The length of the password is from 8 to 16 characters.';
     }
-    console.log(counter);
     if (counter === 0 && testChar) res = `${initStr}${testChar}.`;
     if (counter === 1) {
         testChar

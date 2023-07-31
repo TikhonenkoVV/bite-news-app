@@ -1,19 +1,17 @@
 import { disableBodyScroll } from 'body-scroll-lock';
-import { checkCurrentLocation } from './check-current-location';
 import { refs } from './refs';
-import { load } from './services/storage';
 import { formShow } from './sign-in-up';
-import { renderGallery } from './templates/render-gallery';
-import { markupProfileMenu } from './templates/render-profile-menu';
-import { AUTORIZED_USER } from './utils/constants';
+import { AUTHORIZED, TOKENS } from './utils/constants';
 import { onProfileShow } from './user-profile';
+import { signOut } from './db';
+import { hideLoader, showLoader } from './services/toggleLoader';
 
 export const onProfileBtnClick = () => {
     document.querySelector('main').classList.toggle('blur');
     refs.profileMenu.classList.toggle('hide');
 };
 
-export const onProfileItemClick = e => {
+export const onProfileItemClick = async e => {
     if (e.target.nodeName !== 'A') return;
     onProfileBtnClick();
     const linkId = e.target.getAttribute('id');
@@ -37,14 +35,13 @@ export const onProfileItemClick = e => {
         disableBodyScroll(document.body);
     }
     if (linkId === 'sign-out') {
-        localStorage.removeItem(AUTORIZED_USER);
-        refs.profileBtn.classList.remove('autorized');
-        markupProfileMenu();
-        if (checkCurrentLocation() === 'index') {
-            renderGallery(load('bite-search'), true, refs.newsContainer);
-        } else {
-            refs.backdrop.classList.remove('is-hidden');
-            formShow();
+        showLoader();
+        const status = await signOut();
+        if (status === 204) {
+            localStorage.removeItem(TOKENS);
+            localStorage.removeItem(AUTHORIZED);
         }
+        hideLoader();
+        location.reload();
     }
 };

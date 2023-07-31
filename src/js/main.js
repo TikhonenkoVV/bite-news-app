@@ -1,34 +1,43 @@
-import { load } from './services/storage';
+import { load, save } from './services/storage';
 import { fetchPopularArticles } from './fetch';
 import { normalize } from './normalize';
 import { createPagination } from './pagination';
 import { renderGallery } from './templates/render-gallery';
-import { refs } from './refs';
-const throttle = require('lodash.throttle');
+import { loadUserNews } from './db';
+import { findUserNews } from './find-user-news';
+import { SEARCH_RES } from './utils/constants';
+import throttle from 'lodash.throttle';
+import { hideLoader, showLoader } from './services/toggleLoader';
 
-export async function allData() {
+export const allData = async () => {
+    showLoader();
     try {
-        const data = await fetchPopularArticles();
-        const { results } = data;
+        const { results } = await fetchPopularArticles();
 
-        normalize(results);
+        const normalizeNews = normalize(results);
 
-        renderGallery(load('bite-search'), true, refs.newsContainer);
-        createPagination(load('bite-search'), renderGallery);
+        const userNews = await loadUserNews();
+
+        if (userNews) {
+            const sortedNews = findUserNews(normalizeNews, userNews);
+            save(SEARCH_RES, sortedNews);
+        } else save(SEARCH_RES, normalizeNews);
+
+        createPagination(load(SEARCH_RES), renderGallery);
 
         window.addEventListener(
             'resize',
             throttle(e => {
-                renderGallery(load('bite-search'), true, refs.newsContainer);
-                createPagination(load('bite-search'), renderGallery);
+                createPagination(load(SEARCH_RES), renderGallery);
             }, 1000)
         );
     } catch (error) {
         console.log(error);
     }
-}
+    hideLoader();
+};
 
-export function addOverLay(e) {
+export const addOverLay = e => {
     let elements = e.target.parentNode.parentNode.lastElementChild;
     elements.classList.remove('visually-hidden');
-}
+};

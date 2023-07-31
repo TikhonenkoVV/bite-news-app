@@ -1,13 +1,16 @@
 import { fetchSearchArticles } from './fetch';
 import { renderGallery } from './templates/render-gallery';
 import { normalize } from './normalize';
-import { load, save } from './services/storage';
+import { save } from './services/storage';
 import { createPagination } from './pagination';
 import throttle from 'lodash.throttle';
-import { hideMainContent, showMainContent } from './news-not-found';
+import { hideMainContent } from './news-not-found';
 import { selectedDate } from './calendar';
 import { notification } from './services/notification';
-import { refs } from './refs';
+import { loadUserNews } from './db';
+import { findUserNews } from './find-user-news';
+import { SEARCH_RES } from './utils/constants';
+import { hideLoader, showLoader } from './services/toggleLoader';
 
 export const handleSubmit = async e => {
     e.preventDefault();
@@ -22,36 +25,33 @@ export const handleSubmit = async e => {
         // Notify.warning('Enter some query');
         return;
     }
+
+    // displayBanner(true);
     try {
-        const {
-            response: { docs },
-        } = await fetchSearchArticles(0, query, selectedDate);
-        if (!docs.length) {
-            hideMainContent();
-            return;
-        }
-        showMainContent();
-
-        normalize(docs);
-        renderGallery(load('bite-search'), true, refs.newsContainer);
-        createPagination(load('bite-search'), renderGallery);
-        disableButtons();
-        addLoader();
-
+        showLoader();
+        // addLoader();
         let results = [];
-        results.push(...load('bite-search'));
 
         for (let i = 1; i <= 2; i += 1) {
             try {
                 const {
                     response: { docs },
-                } = await fetchSearchArticles(i, query);
+                } = await fetchSearchArticles(i - 1, query, selectedDate);
                 if (!docs.length) {
+                    hideMainContent();
                     return;
                 }
-                normalize(docs);
-                results.push(...load('bite-search'));
-                save('bite-search', results);
+
+                const normalizeNews = normalize(docs);
+
+                const userNews = await loadUserNews();
+
+                if (userNews) {
+                    const sortedNews = findUserNews(normalizeNews, userNews);
+                    results.push(...sortedNews);
+                } else results.push(...normalizeNews);
+
+                save(SEARCH_RES, results);
             } catch (err) {
                 console.log(err);
             }
@@ -60,13 +60,13 @@ export const handleSubmit = async e => {
             disableButtons();
         }
 
+        hideLoader();
         enableButtons();
-        removeLoader();
+        // removeLoader();
 
         window.addEventListener(
             'resize',
             throttle(e => {
-                renderGallery(load('bite-search'), true);
                 createPagination(results, renderGallery);
             }, 1000)
         );
