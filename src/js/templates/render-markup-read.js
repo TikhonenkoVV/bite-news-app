@@ -46,8 +46,8 @@ export const renderGalleryReadOnDays = userNews => {
                                 </button>
                             </div>
                             <div class="info">
-                                <p class="info__title">${title}</p>
-                                <p class="info__abstract">${abstract}</p>
+                                <p class="info__title line-clamp">${title}</p>
+                                <p class="info__abstract line-clamp">${abstract}</p>
                                 <p class="info__published-date">${formatDate(
                                     published_date
                                 )}</p>

@@ -77,8 +77,8 @@ export const renderGallery = (gallery, ifFirstPage, container) => {
                             </button>
                             </div>
                             <div class="info">
-                                <p class="info__title">${title}</p>
-                                <p class="info__abstract">${abstract}</p>
+                                <p class="info__title line-clamp">${title}</p>
+                                <p class="info__abstract line-clamp">${abstract}</p>
                                 <p class="info__published-date">${newDate}</p>
                                 <a
                                     href="${url}"

@@ -1,11 +1,11 @@
-import { sortUserNews } from './read/sort-news-data';
 import { refs } from './refs';
 import { load } from './services/storage';
 import { testInput } from './services/test-input';
-import { AUTORIZED_USER } from './utils/constants';
 import { notification } from './services/notification';
 import { enableBodyScroll } from 'body-scroll-lock';
 import debounce from 'lodash.debounce';
+import { loadUserNews } from './db';
+import { AUTHORIZED } from './utils/constants';
 
 const onChangePass = e => {
     e.target.value !== ''
@@ -13,19 +13,14 @@ const onChangePass = e => {
         : refs.userProfileSubmitBtn.setAttribute('disabled', true);
 };
 
-const calcStats = () => {
-    const userNews = load(load(AUTORIZED_USER).autorized);
-    const favoritesLength = sortUserNews(userNews, true).length;
-    const read = sortUserNews(userNews, '');
-    let readLength = 0;
-    read.forEach(el => (readLength += el.length));
-    return { favoritesLength, readLength };
-};
-
-export const onProfileShow = () => {
-    refs.userNameInput.value = load(AUTORIZED_USER).userName;
-    refs.statsFavorites.textContent = calcStats().favoritesLength;
-    refs.statsRead.textContent = calcStats().readLength;
+export const onProfileShow = async () => {
+    const favoriteUserNews = await loadUserNews(true, null);
+    const readedUserNews = await loadUserNews(null, true);
+    const favoritesLength = favoriteUserNews.length;
+    const readLength = readedUserNews.length;
+    refs.userNameInput.value = load(AUTHORIZED).name;
+    refs.statsFavorites.textContent = favoritesLength;
+    refs.statsRead.textContent = readLength;
     refs.userProfileCloseBtn.addEventListener('click', onCloseProfile);
     refs.userProfileForm.addEventListener('submit', onProfileSubmit);
     refs.userProfileForm.addEventListener('click', () => {});

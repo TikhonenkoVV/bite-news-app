@@ -53,3 +53,10 @@ main {
 main.blur {
     filter: blur(3px);
 }
+
+.line-clamp {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}

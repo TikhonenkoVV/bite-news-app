@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { BASE_URL } from './utils/constants';
 
 const instansNews = axios.create({
-    baseURL: 'http://localhost:4000/api',
+    baseURL: BASE_URL,
 });
 
 export const setAuthHeader = token => {
@@ -33,6 +34,15 @@ export const verifyUser = async () => {
         return data;
     } catch (error) {
         if (error) return false;
+    }
+};
+
+export const updateAvatar = async avatar => {
+    try {
+        const { data } = await instansNews.patch('/users/avatars', avatar);
+        return data;
+    } catch (error) {
+        console.log(error.message);
     }
 };
 
