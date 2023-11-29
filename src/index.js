@@ -5,13 +5,13 @@ import { onToglerClick, checkCurrentTheme } from './js/togler';
 import { handleScreenSizeChange } from './js/categories';
 import { handleSubmit } from './js/searchForm';
 import { addDataReadNews } from './js/read/add-data-read-more';
-import { onProfileBtnClick } from './js/profile-menu';
-import { markupProfileMenu } from './js/templates/render-profile-menu';
+import { checkProfileBtn, onProfileBtnClick } from './js/profile-menu';
 import { formClose, resetStyle } from './js/sign-in-up';
 import { enableBodyScroll } from 'body-scroll-lock';
 import { setAuthHeader, verifyUser } from './js/db';
 import { load, save } from './js/services/storage';
 import { AUTHORIZED, TOKENS } from './js/utils/constants';
+import { markupProfileModal } from './js/templates/render-profile-modal';
 
 export const tokens = load(TOKENS);
 
@@ -20,12 +20,11 @@ if (tokens) {
     verifyUser()
         .then(data => {
             save(AUTHORIZED, data);
-            markupProfileMenu();
+            checkProfileBtn();
+            markupProfileModal();
         })
         .catch(err => console.log(err.message));
 }
-
-markupProfileMenu();
 
 refs.mobileToggler.addEventListener('click', onToglerClick);
 refs.togler.addEventListener('click', onToglerClick);
@@ -46,7 +45,6 @@ refs.backdrop.addEventListener('mousedown', e => {
             }
             if (!refs.userProfile.classList.contains('is-hidden')) {
                 refs.userProfile.classList.add('is-hidden');
-                refs.userProfileForm.reset();
             }
             resetStyle();
             enableBodyScroll(document.body);
@@ -59,34 +57,3 @@ checkCurrentTheme();
 handleScreenSizeChange();
 
 refs.newsContainer.addEventListener('click', addDataReadNews);
-// if (refs.categoriesBtns && refs.categoriesDropdownBtn) {
-//     refs.categoriesDropdownBtn.addEventListener('click', closeDropdownMenu);
-// }
-
-// if (currentLocation === 'index') {
-//     refs.categoriesContainer.addEventListener('click', onClickBtns);
-//     allData();
-//     setTimeout(() => {
-//         onBannerLoad();
-//     }, 300);
-// }
-
-// if (currentLocation === 'favorite') {
-//     loadUserNews().then(data =>
-//         renderGallery(data, false, refs.favoritesContainer)
-//     );
-// if (isLoadNews)
-//     isFavorite = loadUserNews().find(el => el.favorite === true);
-// if (!isLoadNews || !isFavorite) {
-//     hideMainContent();
-//     return;
-// }
-// showMainContent();
-// const array = sortUserNews(loadUserNews(), true);
-// renderGallery(isLoadNews, false, refs.favoritesContainer);
-//     return;
-// }
-// if (currentLocation === 'read') {
-//     renderGalleryReadOnDays();
-//     return;
-// }

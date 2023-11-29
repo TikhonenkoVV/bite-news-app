@@ -1,14 +1,16 @@
 import { refs } from './refs';
-import { save } from './services/storage';
+import { load, save } from './services/storage';
 import { signIn, signUp } from './db';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { TOKENS } from './utils/constants';
 import { notification } from './services/notification';
 import { testInput } from './services/test-input';
 import { hideLoader, showLoader } from './services/toggleLoader';
+import { checkProfileBtn } from './profile-menu';
 
 export const onSignUpSubmit = async e => {
     e.preventDefault();
+    const currentTheme = load('theme') !== 'dark' ? 'light' : 'dark';
     const {
         elements: { user, email, password, confirmpassword },
     } = e.currentTarget;
@@ -16,6 +18,7 @@ export const onSignUpSubmit = async e => {
         name: user.value,
         email: email.value,
         password: password.value,
+        theme: currentTheme,
     };
     const signInformData = {
         email: email.value,
@@ -68,7 +71,6 @@ export const onSignInSubmit = async e => {
         email: email.value,
         password: password.value,
     };
-    console.log(signInformData);
     if (email.value === '' || password.value === '') {
         notification('Fields cannot be empty');
         return;
@@ -124,6 +126,7 @@ export const onSignInBtnCloseClick = () => {
     enableBodyScroll(document.body);
     refs.backdrop.classList.add('is-hidden');
     refs.autorizeModal.classList.add('is-hidden');
+    checkProfileBtn();
     location.reload();
 };
 

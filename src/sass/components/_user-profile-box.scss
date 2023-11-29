@@ -6,7 +6,7 @@
 .profile__btn {
     width: 30px;
     height: 30px;
-    background-image: url('../images/avatar-default.png');
+    background-image: url('../images/avatar-default-small.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -15,9 +15,9 @@
     cursor: pointer;
 }
 
-.profile__btn.autorized {
-    background-image: url('../images/avatar.jpg');
-}
+// .profile__btn.autorized {
+//     background-image: url('../images/avatar.jpg');
+// }
 
 .profile__caption {
     padding-left: 15px;

@@ -4,13 +4,10 @@ export const refs = {
     loader: document.querySelector('.loader'),
     autorizeModal: document.querySelector('.autorize__container'),
     userProfile: document.querySelector('.user-profile'),
+    userAvatar: document.querySelector('.js-avatar'),
     userNameInput: document.querySelector('input[name="user_name"]'),
     statsFavorites: document.querySelector('.js-favorites'),
     statsRead: document.querySelector('.js-read'),
-    userProfileCloseBtn: document.querySelector('.user-profile__close'),
-    userProfileForm: document.querySelector('.user-profile__form'),
-    passChangeInput: document.querySelector('[name="pass"]'),
-    userProfileSubmitBtn: document.querySelector('.user-profile__btn'),
 
     //sign in refs
     autorizeNav: document.querySelector('.autorize__nav'),
