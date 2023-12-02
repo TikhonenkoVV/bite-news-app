@@ -1,16 +1,35 @@
 .user-profile {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     color: #404040;
     width: 300px;
-    background-color: var(--colorBackground);
-    padding: 25px 75px 25px 25px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     @include for-size(tablet) {
         width: 350px;
     }
+}
+
+.user-profile__card {
+    display: flex;
+    min-height: 100%;
+    padding: 25px 75px 25px 25px;
+    background-color: var(--colorBackground);
+    transform: translateX(0);
+    transition: transform $baseTransition;
+    // box-shadow: -12px 0px 24px 5px rgba(0, 0, 0, 0.77);
+}
+
+.user-profile__card.is-hidden {
+    transform: translateX(100%);
+}
+
+.user-profile.is-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .user-profile__close {
@@ -34,15 +53,18 @@
     fill: $colorAccent;
 }
 
-.user-profile__form {
+.user-profile__box {
     display: flex;
     flex-direction: column;
     min-height: 100%;
     color: var(--colorTextDark);
 }
 
-.user-profile__box {
-    margin-bottom: 20px;
+.user-profile__name {
+    width: 100%;
+    height: 35px;
+    margin-bottom: 15px;
+    color: var(--colorTextDark);
 }
 
 .user-profile__img-box {
@@ -62,7 +84,6 @@
     align-items: center;
     width: 40px;
     height: 40px;
-    opacity: 0.4;
     transition: opacity $baseTransition;
     background-color: #fff;
     border: none;
@@ -75,21 +96,9 @@
     transition: fill $baseTransition;
 }
 
-.user-profile__edit-btn:hover,
-.user-profile__edit-btn:focus {
-    opacity: 1;
-}
-
 .user-profile__edit-btn:hover .user-profile__ico,
 .user-profile__edit-btn:focus .user-profile__ico {
     fill: $colorAccent;
-}
-
-.user-profile__name {
-    width: 100%;
-    height: 35px;
-    padding: 5px;
-    color: var(--colorTextDark);
 }
 
 .user-profile__stats {
@@ -115,18 +124,45 @@
     font-size: 18px;
 }
 
-.user-profile__sign-out-btn {
+%btn-class {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 10px;
     width: 100%;
     height: 40px;
     border: none;
     border-radius: 20px;
-    color: #fff;
-    background-color: $colorAccent;
-    transition: background-color $baseTransition;
+    color: var(--colorTextCategoryBtn);
+    border: 1px solid $colorAccent;
+    transition: background-color $baseTransition, color $baseTransition;
     cursor: pointer;
+    & svg {
+        fill: $colorAccent;
+        transition: fill $baseTransition;
+    }
+    &:hover {
+        background-color: $colorAccent;
+        color: var(--colorTextLight);
+        & svg {
+            fill: var(--colorTextLight);
+        }
+    }
+}
+
+.user-profile__sign-out-btn {
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // width: 100%;
+    // height: 40px;
+    // border: none;
+    // border-radius: 20px;
+    // color: #fff;
+    // background-color: $colorAccent;
+    // transition: background-color $baseTransition;
+    // cursor: pointer;
+    @extend %btn-class;
     @include for-size(tablet) {
         margin-top: auto;
     }
@@ -137,18 +173,15 @@
     background-color: $colorAccentHover;
 }
 
-.user-profile.is-hidden {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-}
-
 .user-profile__crop-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity $baseTransition, visibility $baseTransition;
     &.hide {
         pointer-events: none;
         opacity: 0;
@@ -161,7 +194,27 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
+    min-width: 450px;
+    padding: 25px;
     background-color: var(--colorBackground);
+    & img {
+        object-fit: contain;
+    }
+}
+
+.user-profile__img-wrapper {
+    margin-bottom: 15px;
+}
+
+.user-profile__btn-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.user-profile__open-btn {
+    @extend %btn-class;
+}
+
+.user-profile__save-btn {
+    @extend %btn-class;
 }

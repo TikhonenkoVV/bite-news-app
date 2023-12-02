@@ -13,6 +13,7 @@
 .autorize__container.is-hidden {
     opacity: 0;
     visibility: hidden;
+    pointer-events: none;
 }
 
 .autorize__nav {
@@ -245,7 +246,7 @@
     border-radius: 50%;
     opacity: 0;
     transform: translateY(calc(-100% - 60px));
-    background-image: url('../images/avatar.jpg');
+    background-image: url('https://res.cloudinary.com/dm3dq4juf/image/upload/v1701514954/bitenews/assets/jpeg/avatar-default.jpg');
     background-size: cover;
     transition: opacity 0.5s ease, transform 0.5s ease;
 }

@@ -1,6 +1,6 @@
 import { refs } from './refs';
 import { load, save } from './services/storage';
-import { signIn, signUp } from './db';
+import { signIn, signUp, verifyUser } from './db';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { TOKENS } from './utils/constants';
 import { notification } from './services/notification';
@@ -48,6 +48,7 @@ export const onSignUpSubmit = async e => {
         refs.autorizeNav.classList.add('hide');
         refs.formSignUp.classList.add('hide');
         refs.autorizeAnime.classList.add('show');
+        refs.autorizeAnime.classList.remove('visually-hidden');
         refs.wellcomeLeyout.classList.add('show');
         refs.autorizeTitle.textContent = 'Thank you for registering!';
         refs.profileBtn.classList.remove('hide');
@@ -80,6 +81,8 @@ export const onSignInSubmit = async e => {
     hideLoader();
     if (res) {
         e.target.classList.add('hide');
+        const user = await verifyUser();
+        refs.profilePhoto.style.backgroundImage = `url('${user.avatar}')`;
         refs.autorizeNav.classList.add('hide');
         refs.formSignIn.classList.add('hide');
         refs.profilePhoto.classList.add('show');

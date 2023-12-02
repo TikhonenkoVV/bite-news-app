@@ -1,7 +1,8 @@
-import { BASE_IMG_URL } from './utils/constants';
-import noPoster from '../images/no_poster.jpg';
+import { BASE_IMG_URL, IMAGES } from './utils/constants';
+// import noPoster from '../images/no_poster.jpg';
 
 export const normalize = result => {
+    const noPoster = `${IMAGES}/assets/jpeg/no_poster.jpg';`;
     if (result[0].hasOwnProperty('published_date')) {
         if (result[0].hasOwnProperty('media')) {
             const res = result.map(

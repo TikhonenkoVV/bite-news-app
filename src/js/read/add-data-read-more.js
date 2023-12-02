@@ -7,6 +7,7 @@ import { hideMainContent } from '../news-not-found';
 import { tokens } from '../..';
 import { SEARCH_RES } from '../utils/constants';
 import { hideLoader, showLoader } from '../services/toggleLoader';
+import { markupProfileModal } from '../templates/render-profile-modal';
 
 export const addDataReadNews = async e => {
     const savedLocalNews = load(SEARCH_RES);
@@ -30,6 +31,7 @@ export const addDataReadNews = async e => {
             if (newObj) await addUserNews(newObj);
             hideLoader();
         }
+        markupProfileModal();
     } else if (e.target.classList.contains('news__btn')) {
         let favoriteStatus;
         if (e.target.textContent.trim() === 'Add to favorite') {
@@ -82,6 +84,7 @@ export const addDataReadNews = async e => {
                 hideMainContent();
             }
         }
+        markupProfileModal();
     }
     save(SEARCH_RES, newArr);
 };
