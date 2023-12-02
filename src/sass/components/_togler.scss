@@ -1,4 +1,6 @@
 .theme {
+    display: none;
+
     @include for-size(tablet) {
         display: flex;
         gap: 8px;

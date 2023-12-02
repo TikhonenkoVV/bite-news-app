@@ -11,7 +11,7 @@
     background-color: var(--colorBackground);
     padding: 24px 16px;
     z-index: 10;
-    transition: transform $baseTransition;
+    transition: transform $baseTransition, background-color $baseTransition;
 
     &.is-open {
         transform: translateY(0);
@@ -21,15 +21,14 @@
     position: absolute;
     right: 15px;
     cursor: pointer;
-    background: var(--colorBackground);
+    background-color: var(--colorBackground);
     border: none;
     top: 28px;
+    transition: background-color $baseTransition;
 }
 .mobile-menu__close-svg {
     fill: var(--colorTextDark);
-    transition-property: fill;
-    transition-duration: 250ms;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition: fill $baseTransition;
 
     .mobile-menu__close-button:hover & {
         fill: var(--toglerMainColor);
@@ -48,7 +47,9 @@
     font-size: 24px;
     line-height: 1.38;
     letter-spacing: 0.03em;
+    transition: color $baseTransition;
 }
+
 .mobile-menu__item {
     display: flex;
     align-items: center;
@@ -71,6 +72,7 @@
     padding-bottom: 6px;
     padding-left: 16px;
 }
+
 .mobile-menu__link {
     font-family: $fontFamilyMain;
     color: var(--colorTextDark);
@@ -78,6 +80,7 @@
     font-size: 16px;
     line-height: 1.38;
     letter-spacing: 0.02em;
+    transition: color $baseTransition;
 }
 .mobile-menu__link--active {
     color: var(--colorTextLight);

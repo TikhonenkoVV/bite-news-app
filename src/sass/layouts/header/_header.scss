@@ -26,9 +26,13 @@
 .main-nav {
     display: flex;
     align-items: center;
+    margin-right: auto;
     @include for-size(tablet-only) {
         gap: 7%;
         flex-grow: 1;
+    }
+    @include for-size(tablet) {
+        margin: 0;
     }
     @include for-size(desktop) {
         justify-content: space-between;
@@ -114,12 +118,12 @@
 }
 
 .header-box {
-    display: none;
-
+    margin-left: 20px;
     @include for-size(tablet) {
         display: flex;
         align-items: center;
         gap: 10px;
+        margin: 0;
     }
     @include for-size(desktop) {
         gap: 20px;

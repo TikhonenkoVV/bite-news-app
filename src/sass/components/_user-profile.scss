@@ -42,6 +42,8 @@
     width: 32px;
     height: 32px;
     border: none;
+    background-color: inherit;
+    transition: background-color $baseTransition;
 }
 
 .user-profile__close svg {
@@ -194,7 +196,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 450px;
+    width: 100%;
+    max-width: 450px;
     padding: 25px;
     background-color: var(--colorBackground);
     & img {
