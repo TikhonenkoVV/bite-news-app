@@ -46,6 +46,15 @@ export const updateAvatar = async avatar => {
     }
 };
 
+export const updateTheme = async theme => {
+    try {
+        const { data } = await instansNews.patch('/users/theme', theme);
+        return data;
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
 export const signOut = async () => {
     try {
         const { status } = await instansNews.post('/users/signout');

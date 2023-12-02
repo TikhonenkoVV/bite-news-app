@@ -1,3 +1,8 @@
+import { updateTheme } from './db';
+import { load, save } from './services/storage';
+import { hideLoader, showLoader } from './services/toggleLoader';
+import { AUTHORIZED } from './utils/constants';
+
 export const onToglerClick = e => {
     document.body.classList.toggle('dark');
     const inputRef = document.querySelector('.header__input-search');
@@ -20,22 +25,31 @@ export const onToglerClick = e => {
     );
 };
 
-export function setTheme(isDarkTheme) {
-    localStorage.setItem('theme', !isDarkTheme ? '' : 'dark');
+export const setTheme = async isDarkTheme => {
+    const autorizedUser = load(AUTHORIZED);
+    if (autorizedUser) {
+        showLoader();
+        await updateTheme({ theme: !isDarkTheme ? 'light' : 'dark' });
+        hideLoader();
+    }
+    save('theme', !isDarkTheme ? '' : 'dark');
     const togglerRef = document.querySelector('.theme__lever');
     if (isDarkTheme) {
         togglerRef.style.transform = 'translateX(20px)';
         return;
     }
     togglerRef.style.transform = 'translateX(0px)';
-}
+};
 
 export function checkCurrentTheme() {
-    const theme = localStorage.getItem('theme');
+    const autorizedUser = load(AUTHORIZED);
+    let theme;
+    autorizedUser
+        ? (theme = autorizedUser.theme)
+        : (theme = localStorage.getItem('theme'));
     const currentLocation = window.location.pathname;
     const navLinks = document.querySelectorAll('.site-nav__link');
     const mobileLinks = document.querySelectorAll('.mobile-menu__item');
-    // console.log(currentLocation.includes('read'));
     if (currentLocation.includes('favorite')) {
         toggleNavigationMenuClasses(navLinks, mobileLinks, 'favorite');
     } else if (currentLocation.includes('read')) {

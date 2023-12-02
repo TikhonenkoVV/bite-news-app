@@ -9,6 +9,9 @@ export const onProfileBtnClick = () => {
     if (load(AUTHORIZED)) {
         refs.backdrop.classList.remove('is-hidden');
         refs.userProfile.classList.remove('is-hidden');
+        document
+            .querySelector('.user-profile__card')
+            .classList.remove('is-hidden');
         onProfileShow();
         disableBodyScroll(document.body);
     } else {

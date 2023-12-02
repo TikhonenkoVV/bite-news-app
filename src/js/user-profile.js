@@ -10,6 +10,8 @@ export const onProfileShow = () => {
 export const onCloseProfile = () => {
     refs.userProfile.classList.add('is-hidden');
     refs.backdrop.classList.add('is-hidden');
+    document.querySelector('.user-profile__card').classList.add('is-hidden');
+    refs.backdrop.classList.add('is-hidden');
     document
         .querySelector('.user-profile__close')
         .removeEventListener('click', onCloseProfile);

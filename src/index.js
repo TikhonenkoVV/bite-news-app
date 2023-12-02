@@ -22,9 +22,10 @@ if (tokens) {
             save(AUTHORIZED, data);
             checkProfileBtn();
             markupProfileModal();
+            checkCurrentTheme();
         })
         .catch(err => console.log(err.message));
-}
+} else checkCurrentTheme();
 
 refs.mobileToggler.addEventListener('click', onToglerClick);
 refs.togler.addEventListener('click', onToglerClick);
@@ -45,6 +46,9 @@ refs.backdrop.addEventListener('mousedown', e => {
             }
             if (!refs.userProfile.classList.contains('is-hidden')) {
                 refs.userProfile.classList.add('is-hidden');
+                document
+                    .querySelector('.user-profile__card')
+                    .classList.add('is-hidden');
             }
             resetStyle();
             enableBodyScroll(document.body);
@@ -53,7 +57,6 @@ refs.backdrop.addEventListener('mousedown', e => {
     );
 });
 
-checkCurrentTheme();
 handleScreenSizeChange();
 
 refs.newsContainer.addEventListener('click', addDataReadNews);

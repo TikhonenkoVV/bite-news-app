@@ -96,7 +96,7 @@ export const markupProfileModal = async () => {
     };
 
     const markup = `
-    <div class="user-profile__card">
+    <div class="user-profile__card is-hidden">
         <button class="user-profile__close">
             <svg width="30" height="30">
                 <use href="${sprite}#icon-close"></use>
