@@ -21,7 +21,6 @@
         &:focus-within .header__input-search {
             width: 173px;
             margin: 0;
-            border: 1px solid #111321;
             opacity: 1;
             pointer-events: auto;
             transition: all 0.3s ease;
@@ -31,8 +30,6 @@
     @include for-size(tablet) {
         .header__input-search {
             width: 213px;
-            margin: 0;
-            border: 1px solid #111321;
             opacity: 1;
             pointer-events: auto;
             transition: none;
@@ -42,8 +39,6 @@
     @include for-size(desktop) {
         .header__input-search {
             width: 288px;
-            margin: 0;
-            border: 1px solid #111321;
             opacity: 1;
             pointer-events: auto;
             transition: none;
@@ -71,13 +66,17 @@
     padding: 5px 0;
     padding-left: 48px;
     margin: 0;
+    color: var(--colorTextDark);
     box-sizing: border-box;
-    border: 1px solid var(--toglerMinorColor);
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--inputBorderColor);
     border-radius: 50px;
+    background-color: var(--colorBackground);
     font-size: 12px;
-    // transition: all 0.3s ease;
     opacity: 0;
     pointer-events: none;
+    transition: background-color $baseTransition, border-color $baseTransition;
 
     @include for-size(tablet) {
         transition: none;
@@ -102,7 +101,6 @@
     top: 3px;
     right: 38px;
     cursor: pointer;
-    // transition: all 0.3s ease;
     padding: 0;
     z-index: 10;
     border: none;

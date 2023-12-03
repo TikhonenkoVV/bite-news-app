@@ -1,41 +1,43 @@
 import { loadUserNews } from '../db';
 import { refs } from '../refs';
 import { sortUserNews } from '../read/sort-news-data';
-import { formatDate } from '../services/format-date';
+import { formatClassName, formatDate } from '../services/format-date';
+import { hndleReadNewsClick } from '../read/readNewsBtnClick';
 
 export const renderGalleryReadOnDays = userNews => {
     const newArray = sortUserNews(userNews);
-    let markup = '';
+    let markup = [];
     newArray.map(arr => {
         const date = formatDate(arr[0].createdAt);
-        const markupDtae = `
+        const className = `date-${formatClassName(arr[0].createdAt)}`;
+        markup.push(`
             <div class="news__item-date">
-                <button class="data-read" type="button">
-                    <p class="data-read__text">${date}</p>
+                <button id="${className}" class="data-read" type="button">
+                    ${date}
                     <svg class="data-read__icon" width="9" height="14">
                         <use xlink:href="#icon-arrow-up"></use>
                     </svg>
                 </button>
-            </div>`;
-        const markupNews = arr
-            .map(
-                ({
-                    imgUrl,
-                    title,
-                    section,
-                    abstract,
-                    published_date,
-                    url,
-                    favorite,
-                }) => {
-                    let newsBtnText = 'Add to favorite';
-                    let iconUse = '<use href="#icon-heart-border"></use>';
-                    if (favorite) {
-                        newsBtnText = 'Remove from favorite';
-                        iconUse = '<use href="#icon-heart-fill"></use>';
-                    }
-                    return `
-                        <div class="news__item-read hide">
+                <div class="data-read__news hide ${className}">`);
+
+        arr.map(
+            ({
+                imgUrl,
+                title,
+                section,
+                abstract,
+                published_date,
+                url,
+                favorite,
+            }) => {
+                let newsBtnText = 'Add to favorite';
+                let iconUse = '<use href="#icon-heart-border"></use>';
+                if (favorite) {
+                    newsBtnText = 'Remove from favorite';
+                    iconUse = '<use href="#icon-heart-fill"></use>';
+                }
+                markup.push(`
+                        <div class="news__item-read">
                             <p class="news__section">${section}</p>
                             <div class="news__img">
                                 <img src="${imgUrl}" alt="${title}" loading="lazy"/>
@@ -54,11 +56,14 @@ export const renderGalleryReadOnDays = userNews => {
                                 <a href="${url}" target="_blank" rel="noopener noreferrer nofollow"
                                     class="info__link">Read more</a>
                             </div>
-                        </div>`;
-                }
-            )
-            .join('');
-        markup = markupDtae + markupNews;
-        refs.readContainer.insertAdjacentHTML('beforeend', markup);
+                        </div>`);
+            }
+        );
+
+        markup.push(`</div>
+            </div>
+        `);
     });
+    refs.readContainer.insertAdjacentHTML('beforeend', markup.join(''));
+    refs.readContainer.addEventListener('click', hndleReadNewsClick);
 };

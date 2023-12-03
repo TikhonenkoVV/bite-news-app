@@ -59,4 +59,4 @@ refs.backdrop.addEventListener('mousedown', e => {
 
 handleScreenSizeChange();
 
-refs.newsContainer.addEventListener('click', addDataReadNews);
+// refs.newsContainer.addEventListener('click', addDataReadNews);

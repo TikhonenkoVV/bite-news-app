@@ -3,26 +3,10 @@ import { load, save } from './services/storage';
 import { hideLoader, showLoader } from './services/toggleLoader';
 import { AUTHORIZED } from './utils/constants';
 
-export const onToglerClick = e => {
+export const onToglerClick = () => {
     document.body.classList.toggle('dark');
-    const inputRef = document.querySelector('.header__input-search');
     const isDarkTheme = document.body.classList.contains('dark');
     setTheme(isDarkTheme);
-    if (isDarkTheme) {
-        changeRefStyle(
-            inputRef,
-            { option: 'backgroundColor', value: '#2e2e2e' },
-            { option: 'borderColor', value: '#FFFFFF' },
-            { option: 'color', value: 'white' }
-        );
-        return;
-    }
-    changeRefStyle(
-        inputRef,
-        { option: 'backgroundColor', value: '#FFFFFF' },
-        { option: 'borderColor', value: '#2e2e2e' },
-        { option: 'color', value: 'black' }
-    );
 };
 
 export const setTheme = async isDarkTheme => {
@@ -44,9 +28,7 @@ export const setTheme = async isDarkTheme => {
 export function checkCurrentTheme() {
     const autorizedUser = load(AUTHORIZED);
     let theme;
-    autorizedUser
-        ? (theme = autorizedUser.theme)
-        : (theme = localStorage.getItem('theme'));
+    autorizedUser ? (theme = autorizedUser.theme) : (theme = load('theme'));
     const currentLocation = window.location.pathname;
     const navLinks = document.querySelectorAll('.site-nav__link');
     const mobileLinks = document.querySelectorAll('.mobile-menu__item');
