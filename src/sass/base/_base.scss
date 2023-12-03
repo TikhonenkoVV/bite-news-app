@@ -4,6 +4,9 @@
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: $fontFamilyMain;
     font-size: 16px;
     color: var(--colorTextDark);
@@ -48,6 +51,7 @@ button {
 
 main {
     transition: filter $baseTransition;
+    flex-grow: 1;
 }
 
 main.blur {

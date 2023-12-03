@@ -12,13 +12,12 @@ export const markupProfileModal = async () => {
     const userName = autorizedUser.name;
     let avatar = autorizedUser.avatar;
     if (avatar === '') {
-        avatar = `${IMAGES}/assets/jpeg/avatar-default.png`;
+        avatar = `${IMAGES}/assets/jpeg/avatar-default.jpg`;
     }
     const favoriteUserNews = await loadUserNews(true, null);
     const readedUserNews = await loadUserNews(null, true);
     const favoritesLength = favoriteUserNews.length;
     const readLength = readedUserNews.length;
-    let unsavedAvatar;
 
     const onSingnOut = async () => {
         showLoader();
@@ -32,32 +31,8 @@ export const markupProfileModal = async () => {
     };
 
     const onEditAvatar = () => {
-        if (profileCard.classList.contains('unsaved')) {
-            const formData = new FormData();
-            formData.append('avatar', unsavedAvatar);
-
-            const updAvatar = async () => {
-                showLoader();
-                await updateAvatar(formData);
-                verifyUser()
-                    .then(data => {
-                        save(AUTHORIZED, data);
-                        checkProfileBtn();
-                    })
-                    .catch(err => console.log(err.message));
-                document
-                    .querySelector('.js-href')
-                    .setAttribute('href', `${sprite}#icon-pencil`);
-                cropper.destroy();
-                profileCard.classList.remove('unsaved');
-                hideLoader();
-            };
-            updAvatar();
-            checkProfileBtn();
-        } else {
-            cropBackdrop.classList.remove('hide');
-            profileCard.classList.add('is-hidden');
-        }
+        cropBackdrop.classList.remove('hide');
+        profileCard.classList.add('is-hidden');
     };
 
     const onCropBackdropClick = e => {
@@ -82,17 +57,36 @@ export const markupProfileModal = async () => {
 
     const onSaveAvatar = () => {
         const croppedImg = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+
+        const formData = new FormData();
+        formData.append('avatar', croppedImg);
+
+        const updAvatar = async () => {
+            showLoader();
+            await updateAvatar(formData);
+            verifyUser()
+                .then(data => {
+                    save(AUTHORIZED, data);
+                    checkProfileBtn();
+                })
+                .catch(err => console.log(err.message));
+            hideLoader();
+        };
+        updAvatar();
+        checkProfileBtn();
+
         document.querySelector('.user-profile__avatar').src = croppedImg;
         profileCard.classList.remove('is-hidden');
         profileCard.classList.add('unsaved');
-        document
-            .querySelector('.js-href')
-            .setAttribute('href', `${sprite}#icon-save-alt`);
         cropper.destroy();
         cropBackdrop.classList.add('hide');
-        image.src = croppedImg;
-        unsavedAvatar = croppedImg;
         cropper = new Cropper(image, cropperOptions);
+    };
+
+    const onClearAvatar = () => {
+        cropper.destroy();
+        image.src = `${IMAGES}/assets/jpeg/avatar-default.jpg`;
+        cropper = new Cropper(image, { ...cropperOptions, zoomable: false });
     };
 
     const markup = `
@@ -132,7 +126,6 @@ export const markupProfileModal = async () => {
                 <svg width="25" height="25">
                     <use href="${sprite}#icon-sign-out"></use>
                 </svg>
-
             </button>
         </div>
     </div>
@@ -153,12 +146,17 @@ export const markupProfileModal = async () => {
                         <use href="${sprite}#icon-image"></use>
                     </svg>
                 </label>
-            <button class="user-profile__save-btn" type="button">
-                Save
-                <svg width="25" height="25">
-                    <use href="${sprite}#icon-save"></use>
-                </svg>
-            </button>
+                <button aria-label="clear" class="user-profile__clear-btn" type="button">
+                    <svg width="25" height="25">
+                        <use href="${sprite}#icon-bin"></use>
+                    </svg>
+                </button>
+                <button class="user-profile__save-btn" type="button">
+                    Save
+                    <svg width="25" height="25">
+                        <use href="${sprite}#icon-save"></use>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -171,11 +169,13 @@ export const markupProfileModal = async () => {
     const cropBackdrop = document.querySelector('.user-profile__crop-backdrop');
     const addImageBtn = document.querySelector('.user-profile__open-btn');
     const saveImageBtn = document.querySelector('.user-profile__save-btn');
+    const clearBtn = document.querySelector('.user-profile__clear-btn');
 
     signOutBtn.addEventListener('click', onSingnOut);
     editAvatarBtn.addEventListener('click', onEditAvatar);
     cropBackdrop.addEventListener('click', onCropBackdropClick);
     saveImageBtn.addEventListener('click', onSaveAvatar);
+    clearBtn.addEventListener('click', onClearAvatar);
 
     const cropperOptions = {
         aspectRatio: 1 / 1,

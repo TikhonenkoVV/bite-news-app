@@ -75,24 +75,24 @@ export const renderGallery = (gallery, ifFirstPage, container) => {
                                     ${iconUse}
                                 </svg>
                             </button>
-                            </div>
-                            <div class="info">
-                                <p class="info__title line-clamp">${title}</p>
-                                <p class="info__abstract line-clamp">${abstract}</p>
-                                <p class="info__published-date">${newDate}</p>
-                                <a
-                                    href="${url}"
-                                    target="_blank"
-                                    rel="noopener noreferrer nofollow"
-                                    class="info__link">
-                                    Read more
-                                </a>
-                            </div>
-                            <p class="${overlayClass}">Already read
-                                <svg class="already" width="20" height="20">
-                                    <use href="#icon-already-read"></use>
-                                </svg>
-                            </p>
+                        </div>
+                        <div class="info">
+                            <p class="info__title line-clamp">${title}</p>
+                            <p class="info__abstract line-clamp">${abstract}</p>
+                            <p class="info__published-date">${newDate}</p>
+                            <a
+                                href="${url}"
+                                target="_blank"
+                                rel="noopener noreferrer nofollow"
+                                class="info__link">
+                                Read more
+                            </a>
+                        </div>
+                        <p class="${overlayClass}">Already read
+                            <svg class="already" width="20" height="20">
+                                <use href="#icon-already-read"></use>
+                            </svg>
+                        </p>
                     </div>`;
             }
         )

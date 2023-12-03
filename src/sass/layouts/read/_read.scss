@@ -1,5 +1,11 @@
-.news.read {
-    grid-auto-rows: min-content;
+.data-read {
+    margin-bottom: 40px;
+    @include for-size(tablet) {
+        margin-bottom: 48px;
+    }
+    @include for-size(desktop) {
+        margin-bottom: 60px;
+    }
 }
 
 .data-read__news {
@@ -38,7 +44,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-.data-read {
+.data-read__btn {
     display: flex;
     align-items: center;
     width: 100%;

@@ -1,4 +1,3 @@
-import { loadUserNews } from '../db';
 import { refs } from '../refs';
 import { sortUserNews } from '../read/sort-news-data';
 import { formatClassName, formatDate } from '../services/format-date';
@@ -11,8 +10,8 @@ export const renderGalleryReadOnDays = userNews => {
         const date = formatDate(arr[0].createdAt);
         const className = `date-${formatClassName(arr[0].createdAt)}`;
         markup.push(`
-            <div class="news__item-date">
-                <button id="${className}" class="data-read" type="button">
+            <div class="data-read">
+                <button id="${className}" class="data-read__btn" type="button">
                     ${date}
                     <svg class="data-read__icon" width="9" height="14">
                         <use xlink:href="#icon-arrow-up"></use>

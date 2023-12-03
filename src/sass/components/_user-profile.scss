@@ -207,6 +207,8 @@
 }
 
 .user-profile__img-wrapper {
+    display: flex;
+    justify-content: center;
     margin-bottom: 15px;
 }
 
@@ -221,4 +223,10 @@
 
 .user-profile__save-btn {
     @extend %btn-class;
+}
+
+.user-profile__clear-btn {
+    flex-shrink: 0;
+    @extend %btn-class;
+    width: 40px;
 }

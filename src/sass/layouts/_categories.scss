@@ -178,11 +178,19 @@
     text-align: center;
     font-size: 14px;
     line-height: 1;
-    color: #999aa0;
+    color: var(--colorTextDark);
+    background-color: var(--colorBackground);
     transition: background-color $baseTransition, color $baseTransition;
+    &::placeholder {
+        transition: color $baseTransition;
+    }
     &:hover,
     &:focus {
         background-color: #4440f6;
+        color: #fff;
+    }
+    &:hover::placeholder,
+    &:focus::placeholder {
         color: #fff;
     }
     &:hover + .home__cal-icon,
@@ -194,11 +202,6 @@
         fill: #fff;
     }
 }
-// .home__category-button-icon--open {
-// }
-
-// .home__category-button-icon--close {
-// }
 
 .hidden {
     display: none !important;
